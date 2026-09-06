@@ -1,0 +1,11 @@
+[
+  {
+    "id": "kavita-api",
+    "name": "Kavita (Stable Chapter IDs)",
+    "site": "url",
+    "lang": "Multi",
+    "version": "0.0.9",
+    "url": "https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/YOUR-REPO/main/kavita.js",
+    "iconUrl": "https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/YOUR-REPO/main/icon.png"
+  }
+]
