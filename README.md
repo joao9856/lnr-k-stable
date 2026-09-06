@@ -21,11 +21,3 @@ This is a personal test build of the LNReader Kavita plugin.
    `https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/YOUR-REPO/main/plugins.min.json`
 5. Refresh sources and enable the `Multi` language/source group.
 6. Install/update the Kavita plugin.
-
-## Test
-
-Use a disposable test novel. Start with the 183-chapter version, download a few chapters, then update the monolithic EPUB to 185 chapters in Kavita and refresh LNReader.
-
-Expected: the original 183 chapters keep their identities and only the 2 new chapters appear as new.
-
-Back up LNReader data before testing.
