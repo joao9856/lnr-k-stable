@@ -302,7 +302,7 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   id = 'kavita-api';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.8';
+  version = '0.0.9';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 
@@ -1169,26 +1169,15 @@ class KavitaApiPlugin implements Plugin.PluginBase {
 
   // ---------- BOOK / CHAPTER HELPERS ----------
 
-  // LNReader persists chapter paths and uses them as the chapter identity.
-  // Kavita can regenerate its internal Book IDs when a monolithic EPUB is
-  // re-indexed, so the Kavita Book ID must NOT be part of that persistent key.
+  // LNReader uses ChapterItem.path as the persistent chapter identity.
+  // Do not put Kavita's internal Book ID in that path: Kavita can assign
+  // a new Book ID when a monolithic EPUB is re-indexed.
   private readonly chapterTargets = new Map<
     string,
     { chapterId: number; page: number }
   >();
 
   private stableBookKey(bookInfo: any, chapter: any, volume: any): string {
-    // Prefer a file/path field when Kavita exposes one: it survives a
-    // re-index of the same EPUB and distinguishes multiple books in a series.
-    const fileIdentity =
-      bookInfo?.filePath ??
-      bookInfo?.path ??
-      bookInfo?.fileName ??
-      bookInfo?.filename ??
-      null;
-
-    if (fileIdentity) return String(fileIdentity);
-
     const title =
       bookInfo?.bookTitle ??
       chapter?.titleName ??
@@ -1197,7 +1186,9 @@ class KavitaApiPlugin implements Plugin.PluginBase {
       'book';
     const volumeNumber = bookInfo?.volumeNumber ?? volume?.number ?? '';
 
-    return `${title}\u001f${volumeNumber}`;
+    // For the normal monolithic-EPUB case this stays unchanged when Kavita
+    // re-indexes the file, while still separating distinct books/volumes.
+    return `${String(title)}\u001f${String(volumeNumber)}`;
   }
 
   private makeStableChapterPath(
@@ -1213,18 +1204,64 @@ class KavitaApiPlugin implements Plugin.PluginBase {
     bookKey: string;
     page: number;
   } | null {
-    const match = /^stable2:(\d+):([^:]*):(\d+)$/.exec(chapterPath);
+    const match = /^stable2:(\d+):([^:]+):(\d+)$/.exec(chapterPath);
     if (!match) return null;
 
     const seriesId = Number(match[1]);
     const page = Number(match[3]);
     if (!Number.isFinite(seriesId) || !Number.isFinite(page)) return null;
 
-    return {
-      seriesId,
-      bookKey: decodeURIComponent(match[2]),
-      page,
-    };
+    try {
+      return {
+        seriesId,
+        bookKey: decodeURIComponent(match[2]),
+        page,
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  private async resolveStableChapterTarget(
+    seriesId: number,
+    bookKey: string,
+    page: number,
+    headers: Record<string, string>,
+  ): Promise<{ chapterId: number; page: number } | null> {
+    const stablePath = this.makeStableChapterPath(seriesId, bookKey, page);
+    const cached = this.chapterTargets.get(stablePath);
+    if (cached) return cached;
+
+    const volumesRes = await fetchApi(
+      `${this.site}/api/Series/volumes?seriesId=${seriesId}`,
+      { headers },
+    );
+    const volumes = await volumesRes.json();
+
+    for (const vol of Array.isArray(volumes) ? volumes : []) {
+      for (const ch of vol.chapters ?? []) {
+        if (!ch?.id) continue;
+
+        const bookInfo = await fetchApi(
+          `${this.site}/api/Book/${ch.id}/book-info`,
+          { headers },
+        ).then(res => res.json());
+
+        const currentBookKey = this.stableBookKey(bookInfo, ch, vol);
+        if (currentBookKey !== bookKey) continue;
+
+        const totalPages = Number(
+          bookInfo.pages ?? ch.pages ?? vol.pages ?? 0,
+        );
+        if (page < 0 || page >= totalPages) return null;
+
+        const target = { chapterId: Number(ch.id), page };
+        this.chapterTargets.set(stablePath, target);
+        return target;
+      }
+    }
+
+    return null;
   }
 
   private flattenBookChapters(toc: any[]): { page: number; title: string }[] {
@@ -1415,27 +1452,31 @@ class KavitaApiPlugin implements Plugin.PluginBase {
         const flatToc = this.flattenBookChapters(tocJson);
         const bookKey = this.stableBookKey(bookInfo, ch, vol);
 
-        // The book ID is only the current download target. The stable path
-        // below is what LNReader persists as the chapter identity.
         for (let page = 0; page < totalPages; page++) {
           const tocTitle = this.getTitleForPage(flatToc, page);
-          const chapterName =
-            tocTitle?.trim() || `Chapter ${page + 1}`;
+
+          const nameParts: string[] = [];
+          nameParts.push(`${page + 1} / ${totalPages}`);
+          if (tocTitle) nameParts.push(tocTitle);
+          const volNum = bookInfo.volumeNumber ?? vol.number;
+          const volumeTitle =
+            bookInfo.bookTitle ||
+            ch.titleName ||
+            (volNum != null ? `${series.name}, Vol. ${volNum}` : series.name);
+          if (volumeTitle) nameParts.push(volumeTitle);
 
           const stablePath = this.makeStableChapterPath(
             seriesId,
             bookKey,
             page,
           );
-
-          // Keep the current Kavita ID/page mapping for fast downloads.
           this.chapterTargets.set(stablePath, {
             chapterId: Number(chapterId),
             page,
           });
 
           chapters.push({
-            name: chapterName,
+            name: nameParts.join(' - '),
             path: stablePath,
             chapterNumber: globalIndex++,
             releaseTime: ch.releaseDate ?? ch.created ?? ch.createdUtc ?? null,
@@ -1457,60 +1498,29 @@ class KavitaApiPlugin implements Plugin.PluginBase {
       ...this.getAuthHeaders(),
     };
 
-    // New stable chapter paths resolve through the current Kavita Book ID.
-    // This means a Kavita re-index can change Book IDs without invalidating
-    // LNReader's cached chapter identities.
-    let target = this.chapterTargets.get(chapterPath);
-
-    // Rebuild the mapping when the plugin instance was recreated and no
-    // in-memory target exists yet.
     const stable = this.parseStableChapterPath(chapterPath);
-    if (!target && stable) {
-      const volumesRes = await fetchApi(
-        `${this.site}/api/Series/volumes?seriesId=${stable.seriesId}`,
-        { headers },
+    let target: { chapterId: number; page: number } | null = null;
+
+    if (stable) {
+      target = await this.resolveStableChapterTarget(
+        stable.seriesId,
+        stable.bookKey,
+        stable.page,
+        headers,
       );
-      const volumes = await volumesRes.json();
-
-      outer:
-      for (const vol of Array.isArray(volumes) ? volumes : []) {
-        for (const ch of vol.chapters ?? []) {
-          if (!ch?.id) continue;
-
-          const [bookInfo, tocJson] = await Promise.all([
-            fetchApi(`${this.site}/api/Book/${ch.id}/book-info`, {
-              headers,
-            }).then(res => res.json()),
-            fetchApi(`${this.site}/api/Book/${ch.id}/chapters`, {
-              headers,
-            }).then(res => res.json()),
-          ]);
-
-          const bookKey = this.stableBookKey(bookInfo, ch, vol);
-          if (bookKey !== stable.bookKey) continue;
-
-          const totalPages: number =
-            bookInfo.pages ?? ch.pages ?? vol.pages ?? 0;
-          if (stable.page < 0 || stable.page >= totalPages) continue;
-
-          target = {
-            chapterId: Number(ch.id),
-            page: stable.page,
-          };
-          this.chapterTargets.set(chapterPath, target);
-          break outer;
-        }
+      if (!target) {
+        throw new Error(`Could not resolve stable chapterPath: ${chapterPath}`);
       }
-    }
-
-    if (!target) {
-      // Backwards compatibility for chapter paths created by the old plugin.
+    } else {
+      // Backwards compatibility for paths created by older plugin versions.
       const [chapterIdStr, pageStr] = chapterPath.split(':');
       const chapterId = Number(chapterIdStr);
       const page = Number(pageStr || '0');
+
       if (!chapterId || Number.isNaN(chapterId)) {
         throw new Error(`Invalid chapterPath: ${chapterPath}`);
       }
+
       target = { chapterId, page };
     }
 
