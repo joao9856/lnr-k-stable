@@ -1,53 +1,1296 @@
-var e=this&&this.__assign||function(){return e=Object.assign||function(e){for(var t,i=1,a=arguments.length;i<a;i++)for(var r in t=arguments[i])Object.prototype.hasOwnProperty.call(t,r)&&(e[r]=t[r]);return e},e.apply(this,arguments)},t=this&&this.__awaiter||function(e,t,i,a){return new(i||(i=Promise))((function(r,n){function s(e){try{l(a.next(e))}catch(e){n(e)}}function o(e){try{l(a.throw(e))}catch(e){n(e)}}function l(e){var t;e.done?r(e.value):(t=e.value,t instanceof i?t:new i((function(e){e(t)}))).then(s,o)}l((a=a.apply(e,t||[])).next())}))},i=this&&this.__generator||function(e,t){var i,a,r,n={label:0,sent:function(){if(1&r[0])throw r[1];return r[1]},trys:[],ops:[]},s=Object.create(("function"==typeof Iterator?Iterator:Object).prototype);return s.next=o(0),s.throw=o(1),s.return=o(2),"function"==typeof Symbol&&(s[Symbol.iterator]=function(){return this}),s;function o(o){return function(l){return function(o){if(i)throw new TypeError("Generator is already executing.");for(;s&&(s=0,o[0]&&(n=0)),n;)try{if(i=1,a&&(r=2&o[0]?a.return:o[0]?a.throw||((r=a.return)&&r.call(a),0):a.next)&&!(r=r.call(a,o[1])).done)return r;switch(a=0,r&&(o=[2&o[0],r.value]),o[0]){case 0:case 1:r=o;break;case 4:return n.label++,{value:o[1],done:!1};case 5:n.label++,a=o[1],o=[0];continue;case 7:o=n.ops.pop(),n.trys.pop();continue;default:if(!(r=n.trys,(r=r.length>0&&r[r.length-1])||6!==o[0]&&2!==o[0])){n=0;continue}if(3===o[0]&&(!r||o[1]>r[0]&&o[1]<r[3])){n.label=o[1];break}if(6===o[0]&&n.label<r[1]){n.label=r[1],r=o;break}if(r&&n.label<r[2]){n.label=r[2],n.ops.push(o);break}r[2]&&n.ops.pop(),n.trys.pop();continue}o=t.call(e,n)}catch(e){o=[6,e],a=0}finally{i=r=0}if(5&o[0])throw o[1];return{value:o[0]?o[1]:void 0,done:!0}}([o,l])}}};Object.defineProperty(exports,"__esModule",{value:!0});var a,r,n,s,o=require("@libs/fetch"),l=require("@libs/filterInputs"),u=require("@libs/novelStatus"),c=require("@libs/defaultCover"),p=require("@libs/storage");!function(e){e[e.Equal=0]="Equal",e[e.GreaterThan=1]="GreaterThan",e[e.GreaterThanEqual=2]="GreaterThanEqual",e[e.LessThan=3]="LessThan",e[e.LessThanEqual=4]="LessThanEqual",e[e.Contains=5]="Contains",e[e.MustContains=6]="MustContains",e[e.Matches=7]="Matches",e[e.NotContains=8]="NotContains",e[e.NotEqual=9]="NotEqual",e[e.BeginsWith=10]="BeginsWith",e[e.EndsWith=11]="EndsWith",e[e.IsBefore=12]="IsBefore",e[e.IsAfter=13]="IsAfter",e[e.IsInLast=14]="IsInLast",e[e.IsNotInLast=15]="IsNotInLast",e[e.IsEmpty=16]="IsEmpty"}(a||(a={})),function(e){e[e.Summary=0]="Summary",e[e.SeriesName=1]="SeriesName",e[e.PublicationStatus=2]="PublicationStatus",e[e.Languages=3]="Languages",e[e.AgeRating=4]="AgeRating",e[e.UserRating=5]="UserRating",e[e.Tags=6]="Tags",e[e.CollectionTags=7]="CollectionTags",e[e.Translators=8]="Translators",e[e.Characters=9]="Characters",e[e.Publisher=10]="Publisher",e[e.Editor=11]="Editor",e[e.Artist=12]="Artist",e[e.Letterer=13]="Letterer",e[e.Colorist=14]="Colorist",e[e.Inker=15]="Inker",e[e.Penciller=16]="Penciller",e[e.Writers=17]="Writers",e[e.Genres=18]="Genres",e[e.Libraries=19]="Libraries",e[e.ReadingProgress=20]="ReadingProgress",e[e.Formats=21]="Formats",e[e.ReleaseYear=22]="ReleaseYear",e[e.ReadTime=23]="ReadTime",e[e.Path=24]="Path",e[e.FilePath=25]="FilePath",e[e.WantToRead=26]="WantToRead",e[e.ReadDate=27]="ReadDate",e[e.AverageRating=28]="AverageRating",e[e.Imprint=29]="Imprint",e[e.Team=30]="Team",e[e.Location=31]="Location",e[e.LastRead=32]="LastRead",e[e.FileSize=33]="FileSize"}(r||(r={})),function(e){e[e.MatchAny=0]="MatchAny",e[e.MatchAll=1]="MatchAll"}(n||(n={})),function(e){e[e.SortName=1]="SortName",e[e.Created=2]="Created",e[e.LastModified=3]="LastModified",e[e.ItemAdded=4]="ItemAdded",e[e.TimeToRead=5]="TimeToRead",e[e.ReleaseYear=6]="ReleaseYear",e[e.LastRead=7]="LastRead",e[e.AverageRating=8]="AverageRating",e[e.Random=9]="Random"}(s||(s={}));var h=function(){function e(e){this._combination=n.MatchAll,this._statements=[],this._sortField=s.SortName,this._sortAscending=!0,this._limitTo=0,this._name=e}return e.prototype.combination=function(e){return this._combination=e,this},e.prototype.sortBy=function(e,t){return void 0===t&&(t=!0),this._sortField=e,this._sortAscending=t,this},e.prototype.limitTo=function(e){return this._limitTo=e,this},e.prototype.whereGenresInclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.Genres,comparison:a.MustContains,value:e.join(",")}),this):this},e.prototype.whereGenresExclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.Genres,comparison:a.NotContains,value:e.join(",")}),this):this},e.prototype.wherePublicationStatusInclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.PublicationStatus,comparison:a.Contains,value:e.join(",")}),this):this},e.prototype.wherePublicationStatusExclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.PublicationStatus,comparison:a.NotContains,value:e.join(",")}),this):this},e.prototype.whereLibrariesInclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.Libraries,comparison:a.Contains,value:e.join(",")}),this):this},e.prototype.whereLibrariesExclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.Libraries,comparison:a.NotContains,value:e.join(",")}),this):this},e.prototype.whereFormatsContains=function(e){return e&&0!==e.length?(this._statements.push({field:r.Formats,comparison:a.Contains,value:e.join(",")}),this):this},e.prototype.whereReleaseYear=function(e,t){var i=null!=t?String(t).trim():"";return i?(this._statements.push({field:r.ReleaseYear,comparison:e,value:i}),this):this},e.prototype.whereSeriesName=function(e,t){var i=(null!=t?t:"").trim();return i?(this._statements.push({field:r.SeriesName,comparison:e,value:i}),this):this},e.prototype.whereWantToRead=function(e){var t="string"==typeof e?e.trim().toLowerCase():e;return!0===t||!1===t?this._statements.push({field:r.WantToRead,comparison:a.Equal,value:t?"true":"false"}):"true"!==t&&"false"!==t||this._statements.push({field:r.WantToRead,comparison:a.Equal,value:t}),this},e.prototype.whereTagsInclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.Tags,comparison:a.MustContains,value:e.join(",")}),this):this},e.prototype.whereTagsExclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.Tags,comparison:a.NotContains,value:e.join(",")}),this):this},e.prototype.whereCollectionTagsInclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.CollectionTags,comparison:a.Contains,value:e.join(",")}),this):this},e.prototype.whereCollectionTagsExclude=function(e){return e&&0!==e.length?(this._statements.push({field:r.CollectionTags,comparison:a.NotContains,value:e.join(",")}),this):this},e.prototype.build=function(){return{name:this._name,combination:this._combination,statements:this._statements,sortOptions:{sortField:this._sortField,isAscending:this._sortAscending},limitTo:this._limitTo}},e}(),d=function(){function r(){var e=this;this.id="kavita-api-k",this.name="Kavita",this.icon="src/multi/kavita/icon.png",this.version="0.0.9",this.site=p.storage.get("url"),this.apiKey=p.storage.get("apiKey"),this._filtersLoaded=!1,this._presetFilterMap=new Map,this._filters={presetFilter:{label:"Preset filter",type:l.FilterTypes.Picker,options:[{label:"None",value:""}],value:""},filterCombination:{label:"Filter combination",type:l.FilterTypes.Picker,options:[{label:"Match any (OR)",value:String(n.MatchAny)},{label:"Match all (AND)",value:String(n.MatchAll)}],value:String(n.MatchAll)},sortField:{label:"Sort by",type:l.FilterTypes.Picker,options:[{label:"Sort Name",value:String(s.SortName)},{label:"Created",value:String(s.Created)},{label:"Last Modified",value:String(s.LastModified)},{label:"Item Added",value:String(s.ItemAdded)},{label:"Time to Read",value:String(s.TimeToRead)},{label:"Release Year",value:String(s.ReleaseYear)},{label:"Last Read",value:String(s.LastRead)},{label:"Average Rating",value:String(s.AverageRating)},{label:"Random",value:String(s.Random)}],value:String(s.SortName)},sortDirection:{label:"Sort direction",type:l.FilterTypes.Picker,options:[{label:"Ascending",value:"true"},{label:"Descending",value:"false"}],value:"true"},limitTo:{label:"Limit results (0 = no limit)",type:l.FilterTypes.TextInput,value:"0"},libraries:{label:"Libraries",type:l.FilterTypes.ExcludableCheckboxGroup,options:[],value:{include:[],exclude:[]}},publicationStatus:{label:"Publication status",type:l.FilterTypes.ExcludableCheckboxGroup,options:[],value:{include:[],exclude:[]}},collectionTags:{label:"Collections",type:l.FilterTypes.ExcludableCheckboxGroup,options:[],value:{include:[],exclude:[]}},wantToRead:{label:"Want to read",type:l.FilterTypes.Picker,options:[{label:"Any",value:""},{label:"Must be marked",value:"true"},{label:"Must NOT be marked",value:"false"}],value:""},seriesNameComparison:{label:"Series name operator",type:l.FilterTypes.Picker,options:[{label:"Equal",value:String(a.Equal)},{label:"Not equal",value:String(a.NotEqual)},{label:"Begins with",value:String(a.BeginsWith)},{label:"Ends with",value:String(a.EndsWith)},{label:"Matches",value:String(a.Matches)}],value:String(a.Matches)},seriesNameValue:{label:"Series name",type:l.FilterTypes.TextInput,value:""},releaseYearComparison:{label:"Release year operator",type:l.FilterTypes.Picker,options:[{label:"Equal",value:String(a.Equal)},{label:"Not equal",value:String(a.NotEqual)},{label:"Less than",value:String(a.LessThan)},{label:"Less than or equal",value:String(a.LessThanEqual)},{label:"Greater than",value:String(a.GreaterThan)},{label:"Greater than or equal",value:String(a.GreaterThanEqual)},{label:"Is before",value:String(a.IsBefore)},{label:"Is after",value:String(a.IsAfter)}],value:String(a.Equal)},releaseYearValue:{label:"Release year",type:l.FilterTypes.TextInput,value:""},genres:{label:"Genres",type:l.FilterTypes.ExcludableCheckboxGroup,options:[],value:{include:[],exclude:[]}},tags:{label:"Tagy",type:l.FilterTypes.ExcludableCheckboxGroup,options:[],value:{include:[],exclude:[]}}},this.imageRequestInit=void 0,this.webStorageUtilized=!0,this.jwtToken=null,this.resolveUrl=function(t,i){return t.startsWith("http")?t:"".concat(e.baseUrl).concat(t.startsWith("/")?"":"/").concat(t)},this.pluginSettings={url:{value:"",label:"Base URL (e.g. https://kavita.example.com)",type:"Text"},apiKey:{value:"",label:"Kavita API Key (from Kavita → API / OPDS)",type:"Text"},formatEpub:{value:!1,label:"EPUB",type:"Switch"},formatPdf:{value:!1,label:"PDF",type:"Switch"},formatImage:{value:!1,label:"Image",type:"Switch"},formatArchive:{value:!1,label:"Archive",type:"Switch"}}}return r.prototype.ensureFilterOptionsLoaded=function(){return t(this,void 0,void 0,(function(){var e,t,a,r,n,s,l,u,c,p,h,d,v,f,m,g,b;return i(this,(function(i){switch(i.label){case 0:return this._filtersLoaded?[2]:"function"!=typeof o.fetchApi?(this._filtersLoaded=!0,[2]):[4,this.ensureToken()];case 1:i.sent(),i.label=2;case 2:return i.trys.push([2,4,,5]),[4,this.apiGet("/api/Filter")];case 3:for(e=i.sent(),this._presetFilterMap.clear(),t=[{label:"None",value:""}],a=0,r=e||[];a<r.length;a++)(n=r[a])&&null!=n.id&&"string"==typeof n.filter&&(s=String(n.id),this._presetFilterMap.set(s,n.filter),t.push({label:n.name||"Filter ".concat(s),value:s}));return this._filters.presetFilter.options=t,[3,5];case 4:return l=i.sent(),console.warn("Kavita: failed to load preset filters",l),[3,5];case 5:return i.trys.push([5,7,,8]),[4,this.apiGet("/api/metadata/tags")];case 6:return u=i.sent(),this._filters.tags.options=u.map((function(e){return{label:e.title,value:String(e.id)}})),[3,8];case 7:return c=i.sent(),console.warn("Kavita: failed to load tags",c),[3,8];case 8:return i.trys.push([8,10,,11]),[4,this.apiGet("/api/metadata/genres")];case 9:return p=i.sent(),this._filters.genres.options=p.map((function(e){return{label:e.title,value:String(e.id)}})),[3,11];case 10:return h=i.sent(),console.warn("Kavita: failed to load genres",h),[3,11];case 11:return i.trys.push([11,13,,14]),[4,this.apiGet("/api/metadata/publication-status")];case 12:return d=i.sent(),this._filters.publicationStatus.options=d.map((function(e){return{label:e.title,value:String(e.value)}})),[3,14];case 13:return v=i.sent(),console.warn("Kavita: failed to load publication statuses",v),[3,14];case 14:return i.trys.push([14,16,,17]),[4,this.apiGet("/api/library/libraries")];case 15:return f=i.sent(),this._filters.libraries.options=f.map((function(e){return{label:e.name,value:String(e.id)}})),[3,17];case 16:return m=i.sent(),console.warn("Kavita: failed to load libraries",m),[3,17];case 17:return i.trys.push([17,19,,20]),[4,this.apiGet("/api/collection?ownedOnly=false")];case 18:return g=i.sent(),this._filters.collectionTags.options=g.map((function(e){return{label:e.title,value:String(e.id)}})),[3,20];case 19:return b=i.sent(),console.warn("Kavita: failed to load collections",b),[3,20];case 20:return this._filtersLoaded=!0,[2]}}))}))},r.prototype.decodePresetFilter=function(a){return t(this,void 0,void 0,(function(){var t,r,l,u,c,p,h,d,v,f,m,g,b;return i(this,(function(i){switch(i.label){case 0:return a?[4,this.ensureToken()]:[2,null];case 1:i.sent(),i.label=2;case 2:return i.trys.push([2,5,,6]),[4,(0,o.fetchApi)("".concat(this.baseUrl,"/api/Filter/decode"),{method:"POST",headers:e({Accept:"application/json","Content-Type":"application/json"},this.getAuthHeaders()),body:JSON.stringify({encodedFilter:a})})];case 3:return[4,i.sent().text()];case 4:return t=i.sent(),[3,6];case 5:return r=i.sent(),console.warn("Kavita: failed to decode preset filter (request)",r),[2,null];case 6:try{return l=JSON.parse(t),u=Number(null==l?void 0:l.combination),c=u===n.MatchAny?n.MatchAny:n.MatchAll,p=Array.isArray(null==l?void 0:l.statements)?l.statements.map((function(e){var t=Number(null==e?void 0:e.field),i=Number(null==e?void 0:e.comparison);return Number.isNaN(t)||Number.isNaN(i)?null:{field:t,comparison:i,value:null===(null==e?void 0:e.value)||void 0===(null==e?void 0:e.value)?void 0:String(e.value)}})).filter(Boolean):[],h=Number(null===(g=null==l?void 0:l.sortOptions)||void 0===g?void 0:g.sortField),d=null===(b=null==l?void 0:l.sortOptions)||void 0===b?void 0:b.isAscending,v="boolean"==typeof d?d:"string"!=typeof d||"true"===d.toLowerCase(),f={sortField:Number.isNaN(h)?s.SortName:h,isAscending:v},m=Number(null==l?void 0:l.limitTo),[2,{id:"number"==typeof(null==l?void 0:l.id)&&Number.isFinite(l.id)?l.id:void 0,name:(null==l?void 0:l.name)||"Preset filter",combination:c,statements:p,sortOptions:f,limitTo:Number.isNaN(m)?0:m}]}catch(e){return console.warn("Kavita: failed to decode preset filter (parse)",e,t),[2,null]}return[2]}}))}))},Object.defineProperty(r.prototype,"filters",{get:function(){return this.ensureFilterOptionsLoaded(),this._filters},enumerable:!1,configurable:!0}),Object.defineProperty(r.prototype,"baseUrl",{get:function(){return this.site},enumerable:!1,configurable:!0}),r.prototype.getBoolSetting=function(e,t){var i=p.storage.get(e);if("boolean"==typeof i)return i;if("string"==typeof i){var a=i.toLowerCase().trim();if(["true","1","yes","on"].includes(a))return!0;if(["false","0","no","off"].includes(a))return!1}return t},r.prototype.ensureToken=function(){return t(this,void 0,void 0,(function(){var e,t,a;return i(this,(function(i){switch(i.label){case 0:if(this.jwtToken)return[2];if("function"!=typeof o.fetchApi)throw new Error("fetchApi is not available in this runtime");return e="".concat(this.baseUrl,"/api/Plugin/authenticate?apiKey=").concat(encodeURIComponent(this.apiKey),"&pluginName=lnreader-kavita"),[4,(0,o.fetchApi)(e,{method:"POST"})];case 1:return[4,i.sent().text()];case 2:t=i.sent();try{a=JSON.parse(t)}catch(e){throw new Error("Authentication failed, non-JSON response: ".concat(t))}if(!(null==a?void 0:a.token))throw new Error("Authentication failed: token missing in response");return console.log("Kavita API: Authenticated successfully - ".concat(a.token)),this.jwtToken=a.token,[2]}}))}))},r.prototype.getAuthHeaders=function(){return this.jwtToken?{Authorization:"Bearer ".concat(this.jwtToken)}:{}},r.prototype.apiGet=function(a){return t(this,void 0,void 0,(function(){var t,r;return i(this,(function(i){switch(i.label){case 0:return[4,this.ensureToken()];case 1:return i.sent(),t=a.startsWith("http")?a:"".concat(this.baseUrl).concat(a.startsWith("/")?"":"/").concat(a),[4,(0,o.fetchApi)(t,{method:"GET",headers:e({Accept:"application/json"},this.getAuthHeaders())})];case 2:return[4,i.sent().text()];case 3:r=i.sent();try{return[2,JSON.parse(r)]}catch(e){return[2,r]}return[2]}}))}))},r.prototype.popularNovels=function(r,u){return t(this,arguments,void 0,(function(t,r){var u,p,d,v,f,m,g,b,y,S,T,N,A,w,P,F,C,k,I,R,L,E,x,_,M,j,O,B,G,q,K,U,W,Y,J,D,H,z,V,Q,X,Z,$=this,ee=r.showLatestNovels,te=r.filters;return i(this,(function(i){switch(i.label){case 0:return[4,this.ensureToken()];case 1:return i.sent(),[4,this.ensureFilterOptionsLoaded()];case 2:return i.sent(),u=30,p=null==te?void 0:te.presetFilter,d=p&&p.type===l.FilterTypes.Picker&&"string"==typeof p.value?p.value.trim():"",v=null,d?(f=this._presetFilterMap.get(d))?[4,this.decodePresetFilter(f)]:[3,4]:[3,5];case 3:return v=i.sent(),[3,5];case 4:console.warn("Kavita: preset filter ".concat(d," missing from cache")),i.label=5;case 5:return m=Boolean(d),g=m,v?(g=!0,b=v):m?b=new h("LNReader: Preset (fallback)").combination(n.MatchAll).sortBy(s.SortName,!0).limitTo(0).build():(y=function(e,t,i){var a=null==te?void 0:te[e];if(!a||a.type!==l.FilterTypes.ExcludableCheckboxGroup||"object"!=typeof a)return!1;var r=a.value||{},n=!1,s=Array.isArray(r.include)?r.include:[];s.length>0&&(t(s),n=!0);var o=Array.isArray(r.exclude)?r.exclude:[];return o.length>0&&(i(o),n=!0),n},S=n.MatchAll,(T=null==te?void 0:te.filterCombination)&&T.type===l.FilterTypes.Picker&&"string"==typeof T.value&&((O=Number(T.value))!==n.MatchAny&&O!==n.MatchAll||(S=O)),g=!1,N=0,(A=null==te?void 0:te.limitTo)&&A.type===l.FilterTypes.TextInput&&(w=String(null!==(Q=A.value)&&void 0!==Q?Q:"").trim())&&(O=Number(w),Number.isFinite(O)&&O>=0&&(N=O,O>0&&(g=!0))),P=s.SortName,F=!0,(C=null==te?void 0:te.sortField)&&C.type===l.FilterTypes.Picker&&"string"==typeof C.value&&(O=Number(C.value),Number.isNaN(O)||(P=O)),(k=null==te?void 0:te.sortDirection)&&k.type===l.FilterTypes.Picker&&"string"==typeof k.value&&(F="true"===k.value.toLowerCase()),P===s.SortName&&!0===F||(g=!0),I=new h("LNReader: Recently Added").combination(S).sortBy(P,F).limitTo(N),y("genres",(function(e){return I.whereGenresInclude(e)}),(function(e){return I.whereGenresExclude(e)}))&&(g=!0),y("publicationStatus",(function(e){return I.wherePublicationStatusInclude(e)}),(function(e){return I.wherePublicationStatusExclude(e)}))&&(g=!0),y("libraries",(function(e){return I.whereLibrariesInclude(e)}),(function(e){return I.whereLibrariesExclude(e)}))&&(g=!0),R=null==te?void 0:te.releaseYearValue,L=null==te?void 0:te.releaseYearComparison,R&&R.type===l.FilterTypes.TextInput&&(E=(null!==(X=R.value)&&void 0!==X?X:"").trim())&&(j=a.Equal,L&&L.type===l.FilterTypes.Picker&&"string"==typeof L.value&&(O=Number(L.value),Number.isNaN(O)||(j=O)),I.whereReleaseYear(j,E),g=!0),x=null==te?void 0:te.seriesNameValue,_=null==te?void 0:te.seriesNameComparison,x&&x.type===l.FilterTypes.TextInput&&(M=(null!==(Z=x.value)&&void 0!==Z?Z:"").trim())&&(j=a.Matches,_&&_.type===l.FilterTypes.Picker&&"string"==typeof _.value&&(O=Number(_.value),Number.isNaN(O)||(j=O)),I.whereSeriesName(j,M),g=!0),y("tags",(function(e){return I.whereTagsInclude(e)}),(function(e){return I.whereTagsExclude(e)}))&&(g=!0),y("collectionTags",(function(e){return I.whereCollectionTagsInclude(e)}),(function(e){return I.whereCollectionTagsExclude(e)}))&&(g=!0),(B=null==te?void 0:te.wantToRead)&&B.type===l.FilterTypes.Picker&&"string"==typeof B.value&&("true"!==(G=B.value.trim().toLowerCase())&&"false"!==G||(I.whereWantToRead(G),g=!0)),q=this.getBoolSetting("formatImage",!1),K=this.getBoolSetting("formatArchive",!1),U=this.getBoolSetting("formatEpub",!1),W=this.getBoolSetting("formatPdf",!1),Y=[],q&&Y.push("0"),K&&Y.push("1"),U&&Y.push("3"),W&&Y.push("4"),Y.length>0&&I.whereFormatsContains(Y),b=I.build()),console.log("Kavita API: popularNovels",{pageNo:t,showLatestNovels:ee,hasUserFilters:g,usingPresetFilter:Boolean(v),presetFilterSelected:m}),J=ee&&!g?"/api/Series/recently-added-v2":"/api/Series/v2",D="".concat(this.baseUrl).concat(J,"?PageNumber=").concat(t,"&PageSize=").concat(u),[4,(0,o.fetchApi)(D,{method:"POST",headers:e({Accept:"text/plain","Content-Type":"application/json"},this.getAuthHeaders()),body:JSON.stringify(b)})];case 6:return[4,i.sent().text()];case 7:H=i.sent(),z=[];try{z=JSON.parse(H)}catch(e){return console.warn("Kavita API: popularNovels - invalid JSON response"),[2,[]]}return V=(z||[]).map((function(e){var t,i,a,r=null!==(t=e.id)&&void 0!==t?t:e.seriesId,n=null!==(a=null!==(i=e.name)&&void 0!==i?i:e.seriesName)&&void 0!==a?a:"Unknown series",s=r?"".concat($.baseUrl,"/api/image/series-cover?seriesId=").concat(r).concat($.apiKey?"&apiKey=".concat($.apiKey):""):c.defaultCover;return{name:n,path:String(r),cover:s}})),[2,V]}}))}))},r.prototype.flattenBookChapters=function(e){var t=[],i=function(e){var a;"number"==typeof e.page&&t.push({page:e.page,title:null!==(a=e.title)&&void 0!==a?a:""}),Array.isArray(e.children)&&e.children.forEach(i)};return Array.isArray(e)&&e.forEach(i),t.sort((function(e,t){return e.page-t.page})),t},r.prototype.getTitleForPage=function(e,t){for(var i=null,a=0,r=e;a<r.length;a++){var n=r[a];if(!(n.page<=t))break;i=n.title||null}return i},r.prototype.parseNovel=function(a){return t(this,void 0,void 0,(function(){var t,r,n,s,l,c,p,h,d,v,f,m,g,b,y,S,T,N,A,w,P,F,C,k,I,R,L,E,x,_,M,j,O,B,G,q,K,U,W,Y,J,D,H,z,V,Q,X,Z,$,ee,te,ie,ae,re,ne,se,oe,le,ue,ce,pe,he,de,ve,fe,me,ge;return i(this,(function(i){switch(i.label){case 0:return[4,this.ensureToken()];case 1:return i.sent(),t=e({Accept:"application/json"},this.getAuthHeaders()),r=Number(a.startsWith("/api/Series/")?a.split("/").pop():a),[4,Promise.all([(0,o.fetchApi)("".concat(this.site,"/api/Series/").concat(r),{headers:t}),(0,o.fetchApi)("".concat(this.site,"/api/Series/metadata?seriesId=").concat(r),{headers:t}),(0,o.fetchApi)("".concat(this.site,"/api/Series/volumes?seriesId=").concat(r),{headers:t})])];case 2:return n=i.sent(),s=n[0],l=n[1],c=n[2],[4,s.json()];case 3:return p=i.sent(),[4,l.json()];case 4:return h=i.sent(),[4,c.json()];case 5:switch(d=i.sent(),v={path:String(r),name:null!==(Q=null!==(V=p.name)&&void 0!==V?V:h.title)&&void 0!==Q?Q:"Untitled",cover:"".concat(this.site,"/api/image/series-cover?seriesId=").concat(r).concat(this.apiKey?"&apiKey=".concat(this.apiKey):""),chapters:[]},Array.isArray(h.people)&&h.people.length?(f=h.people.filter((function(e){return String(e.role||"").toLowerCase().includes("writer")}))).length&&(v.author=f.map((function(e){return e.name})).join(", ")):(m=Array.isArray(d)?d[0]:null,(g=m&&Array.isArray(m.chapters)?m.chapters[0]:null)&&Array.isArray(g.writers)&&(v.author=g.writers.map((function(e){return e.name})).join(", "))),h.publicationStatus){case 0:v.status=u.NovelStatus.Ongoing;break;case 1:v.status=u.NovelStatus.OnHiatus;break;case 2:v.status=u.NovelStatus.Completed;break;case 3:v.status=u.NovelStatus.Cancelled;break;default:v.status=u.NovelStatus.Unknown}if(Array.isArray(h.genres)&&h.genres.length)v.genres=h.genres.map((function(e){var t,i,a;return null!==(a=null!==(i=null!==(t=e.title)&&void 0!==t?t:e.name)&&void 0!==i?i:e.label)&&void 0!==a?a:e.value})).filter(Boolean).join(", ");else{for(b=new Set,y=0,S=d;y<S.length;y++)for(x=S[y],T=0,N=null!==(X=x.chapters)&&void 0!==X?X:[];T<N.length;T++)for(O=N[T],A=0,w=null!==(Z=O.genres)&&void 0!==Z?Z:[];A<w.length;A++)P=w[A],(F=null!==($=P.title)&&void 0!==$?$:P.name)&&b.add(F);b.size&&(v.genres=Array.from(b).join(", "))}v.summary=null!==(ae=null!==(ie=null!==(te=null!==(ee=h.summary)&&void 0!==ee?ee:h.description)&&void 0!==te?te:p.summary)&&void 0!==ie?ie:p.description)&&void 0!==ae?ae:void 0,"number"==typeof(C=null!==(se=null!==(ne=null!==(re=h.userRating)&&void 0!==re?re:h.averageRating)&&void 0!==ne?ne:p.userRating)&&void 0!==se?se:p.averageRating)&&(v.rating=C),(k=null!==(ue=null!==(le=null!==(oe=h.seriesStatus)&&void 0!==oe?oe:h.status)&&void 0!==le?le:p.status)&&void 0!==ue?ue:p.seriesStatus)&&(v.status=String(k)),I=[],R=1,L=0,E=d,i.label=6;case 6:if(!(L<E.length))return[3,11];if(x=E[L],!(_=null!==(ce=x.chapters)&&void 0!==ce?ce:[]).length)return[3,10];M=0,j=_,i.label=7;case 7:return M<j.length?(O=j[M],(B=O.id)?[4,Promise.all([(0,o.fetchApi)("".concat(this.site,"/api/Book/").concat(B,"/book-info"),{headers:t}).then((function(e){return e.json()})),(0,o.fetchApi)("".concat(this.site,"/api/Book/").concat(B,"/chapters"),{headers:t}).then((function(e){return e.json()}))])]:[3,9]):[3,10];case 8:if(G=i.sent(),q=G[0],K=G[1],!(U=null!==(de=null!==(he=null!==(pe=q.pages)&&void 0!==pe?pe:O.pages)&&void 0!==he?he:x.pages)&&void 0!==de?de:0))return[3,9];for(W=this.flattenBookChapters(K),Y=null!==(ve=q.volumeNumber)&&void 0!==ve?ve:x.number,J=q.bookTitle||O.titleName||(null!=Y?"".concat(p.name,", Vol. ").concat(Y):p.name),D=0;D<U;D++)H=this.getTitleForPage(W,D),(z=[]).push("".concat(D+1," / ").concat(U)),H&&z.push(H),J&&z.push(J),I.push({name:z.join(" - "),path:"".concat(B,":").concat(D),chapterNumber:R++,releaseTime:null!==(ge=null!==(me=null!==(fe=O.releaseDate)&&void 0!==fe?fe:O.created)&&void 0!==me?me:O.createdUtc)&&void 0!==ge?ge:null});i.label=9;case 9:return M++,[3,7];case 10:return L++,[3,6];case 11:return v.chapters=I,[2,v]}}))}))},r.prototype.parseChapter=function(a){return t(this,void 0,void 0,(function(){var t,r,n,s,l,u;return i(this,(function(i){switch(i.label){case 0:return[4,this.ensureToken()];case 1:if(i.sent(),t=e({Accept:"text/plain,application/json"},this.getAuthHeaders()),r=a.split(":"),n=r[0],s=r[1],l=Number(n),u=Number(s||"0"),!l||Number.isNaN(l))throw new Error("Invalid chapterPath: ".concat(a));return[4,(0,o.fetchApi)("".concat(this.site,"/api/Book/").concat(l,"/book-page?page=").concat(u),{headers:t})];case 2:return[4,i.sent().text()];case 3:return[2,i.sent()]}}))}))},r.prototype.searchNovels=function(r,l){return t(this,void 0,void 0,(function(){var t,u,p,d,v,f,m,g,b,y,S,T,N,A,w=this;return i(this,(function(i){switch(i.label){case 0:return(t=r.trim())?[4,this.ensureToken()]:[2,[]];case 1:return i.sent(),u=Math.max(l||1,1),p=new h("LNReader: Search").combination(n.MatchAll).sortBy(s.SortName,!0).limitTo(0).whereSeriesName(a.Matches,t),d=this.getBoolSetting("formatImage",!1),v=this.getBoolSetting("formatArchive",!1),f=this.getBoolSetting("formatEpub",!0),m=this.getBoolSetting("formatPdf",!0),g=[],d&&g.push("0"),v&&g.push("1"),f&&g.push("3"),m&&g.push("4"),g.length>0&&p.whereFormatsContains(g),b=p.build(),y="".concat(this.baseUrl,"/api/Series/v2?PageNumber=").concat(u,"&PageSize=").concat(12),[4,(0,o.fetchApi)(y,{method:"POST",headers:e({Accept:"text/plain","Content-Type":"application/json"},this.getAuthHeaders()),body:JSON.stringify(b)})];case 2:return[4,i.sent().text()];case 3:S=i.sent(),T=[];try{T=JSON.parse(S)}catch(e){return console.warn("Kavita API: searchNovels - invalid JSON response"),[2,[]]}return N=Array.isArray(T)?T:(null==T?void 0:T.series)||(null==T?void 0:T.seriesResults)||(null==T?void 0:T.seriesDtos)||[],A=N.filter(Boolean).map((function(e){var t,i,a,r=null!==(t=null==e?void 0:e.seriesId)&&void 0!==t?t:null==e?void 0:e.id,n=null!==(a=null!==(i=null==e?void 0:e.name)&&void 0!==i?i:null==e?void 0:e.seriesName)&&void 0!==a?a:"Unknown series",s=r?"".concat(w.baseUrl,"/api/image/series-cover?seriesId=").concat(r).concat(w.apiKey?"&apiKey=".concat(w.apiKey):""):c.defaultCover;return{name:n,path:String(r),cover:s}})),[2,A]}}))}))},r}();exports.default=new d;
-
-/* Personal patch: stable LNReader chapter identities for Kavita EPUB reindexing. */
-(function () {
-  var plugin = exports.default;
-  if (!plugin || typeof plugin.parseNovel !== 'function' || typeof plugin.parseChapter !== 'function') {
-    return;
-  }
-
-  var originalParseNovel = plugin.parseNovel.bind(plugin);
-  var originalParseChapter = plugin.parseChapter.bind(plugin);
-  var stableTargets = new Map();
-
-  plugin.parseNovel = function (novelPath) {
-    return originalParseNovel(novelPath).then(function (novel) {
-      var bookOrdinals = new Map();
-      var nextBookOrdinal = 0;
-
-      novel.chapters = (novel.chapters || []).map(function (chapter) {
-        var oldPath = String(chapter.path || '');
-        var splitAt = oldPath.indexOf(':');
-        var bookId = splitAt >= 0 ? oldPath.slice(0, splitAt) : oldPath;
-        var page = splitAt >= 0 ? oldPath.slice(splitAt + 1) : '0';
-
-        if (!bookOrdinals.has(bookId)) {
-          bookOrdinals.set(bookId, nextBookOrdinal++);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const fetch_1 = require("@libs/fetch");
+const filterInputs_1 = require("@libs/filterInputs");
+const novelStatus_1 = require("@libs/novelStatus");
+const defaultCover_1 = require("@libs/defaultCover");
+const storage_1 = require("@libs/storage");
+// ========== KAVITA FILTER INFRA ==========
+var KavitaComparison;
+(function (KavitaComparison) {
+    KavitaComparison[KavitaComparison["Equal"] = 0] = "Equal";
+    KavitaComparison[KavitaComparison["GreaterThan"] = 1] = "GreaterThan";
+    KavitaComparison[KavitaComparison["GreaterThanEqual"] = 2] = "GreaterThanEqual";
+    KavitaComparison[KavitaComparison["LessThan"] = 3] = "LessThan";
+    KavitaComparison[KavitaComparison["LessThanEqual"] = 4] = "LessThanEqual";
+    KavitaComparison[KavitaComparison["Contains"] = 5] = "Contains";
+    KavitaComparison[KavitaComparison["MustContains"] = 6] = "MustContains";
+    KavitaComparison[KavitaComparison["Matches"] = 7] = "Matches";
+    KavitaComparison[KavitaComparison["NotContains"] = 8] = "NotContains";
+    KavitaComparison[KavitaComparison["NotEqual"] = 9] = "NotEqual";
+    KavitaComparison[KavitaComparison["BeginsWith"] = 10] = "BeginsWith";
+    KavitaComparison[KavitaComparison["EndsWith"] = 11] = "EndsWith";
+    KavitaComparison[KavitaComparison["IsBefore"] = 12] = "IsBefore";
+    KavitaComparison[KavitaComparison["IsAfter"] = 13] = "IsAfter";
+    KavitaComparison[KavitaComparison["IsInLast"] = 14] = "IsInLast";
+    KavitaComparison[KavitaComparison["IsNotInLast"] = 15] = "IsNotInLast";
+    KavitaComparison[KavitaComparison["IsEmpty"] = 16] = "IsEmpty";
+})(KavitaComparison || (KavitaComparison = {}));
+var KavitaField;
+(function (KavitaField) {
+    KavitaField[KavitaField["Summary"] = 0] = "Summary";
+    KavitaField[KavitaField["SeriesName"] = 1] = "SeriesName";
+    KavitaField[KavitaField["PublicationStatus"] = 2] = "PublicationStatus";
+    KavitaField[KavitaField["Languages"] = 3] = "Languages";
+    KavitaField[KavitaField["AgeRating"] = 4] = "AgeRating";
+    KavitaField[KavitaField["UserRating"] = 5] = "UserRating";
+    KavitaField[KavitaField["Tags"] = 6] = "Tags";
+    KavitaField[KavitaField["CollectionTags"] = 7] = "CollectionTags";
+    KavitaField[KavitaField["Translators"] = 8] = "Translators";
+    KavitaField[KavitaField["Characters"] = 9] = "Characters";
+    KavitaField[KavitaField["Publisher"] = 10] = "Publisher";
+    KavitaField[KavitaField["Editor"] = 11] = "Editor";
+    KavitaField[KavitaField["Artist"] = 12] = "Artist";
+    KavitaField[KavitaField["Letterer"] = 13] = "Letterer";
+    KavitaField[KavitaField["Colorist"] = 14] = "Colorist";
+    KavitaField[KavitaField["Inker"] = 15] = "Inker";
+    KavitaField[KavitaField["Penciller"] = 16] = "Penciller";
+    KavitaField[KavitaField["Writers"] = 17] = "Writers";
+    KavitaField[KavitaField["Genres"] = 18] = "Genres";
+    KavitaField[KavitaField["Libraries"] = 19] = "Libraries";
+    KavitaField[KavitaField["ReadingProgress"] = 20] = "ReadingProgress";
+    KavitaField[KavitaField["Formats"] = 21] = "Formats";
+    KavitaField[KavitaField["ReleaseYear"] = 22] = "ReleaseYear";
+    KavitaField[KavitaField["ReadTime"] = 23] = "ReadTime";
+    KavitaField[KavitaField["Path"] = 24] = "Path";
+    KavitaField[KavitaField["FilePath"] = 25] = "FilePath";
+    KavitaField[KavitaField["WantToRead"] = 26] = "WantToRead";
+    KavitaField[KavitaField["ReadDate"] = 27] = "ReadDate";
+    KavitaField[KavitaField["AverageRating"] = 28] = "AverageRating";
+    KavitaField[KavitaField["Imprint"] = 29] = "Imprint";
+    KavitaField[KavitaField["Team"] = 30] = "Team";
+    KavitaField[KavitaField["Location"] = 31] = "Location";
+    KavitaField[KavitaField["LastRead"] = 32] = "LastRead";
+    KavitaField[KavitaField["FileSize"] = 33] = "FileSize";
+})(KavitaField || (KavitaField = {}));
+var KavitaCombination;
+(function (KavitaCombination) {
+    KavitaCombination[KavitaCombination["MatchAny"] = 0] = "MatchAny";
+    KavitaCombination[KavitaCombination["MatchAll"] = 1] = "MatchAll";
+})(KavitaCombination || (KavitaCombination = {}));
+var KavitaSortField;
+(function (KavitaSortField) {
+    KavitaSortField[KavitaSortField["SortName"] = 1] = "SortName";
+    KavitaSortField[KavitaSortField["Created"] = 2] = "Created";
+    KavitaSortField[KavitaSortField["LastModified"] = 3] = "LastModified";
+    KavitaSortField[KavitaSortField["ItemAdded"] = 4] = "ItemAdded";
+    KavitaSortField[KavitaSortField["TimeToRead"] = 5] = "TimeToRead";
+    KavitaSortField[KavitaSortField["ReleaseYear"] = 6] = "ReleaseYear";
+    KavitaSortField[KavitaSortField["LastRead"] = 7] = "LastRead";
+    KavitaSortField[KavitaSortField["AverageRating"] = 8] = "AverageRating";
+    KavitaSortField[KavitaSortField["Random"] = 9] = "Random";
+})(KavitaSortField || (KavitaSortField = {}));
+class KavitaFilterBuilder {
+    constructor(name) {
+        this._combination = KavitaCombination.MatchAll;
+        this._statements = [];
+        this._sortField = KavitaSortField.SortName;
+        this._sortAscending = true;
+        this._limitTo = 0;
+        this._name = name;
+    }
+    combination(type) {
+        this._combination = type;
+        return this;
+    }
+    sortBy(field, ascending = true) {
+        this._sortField = field;
+        this._sortAscending = ascending;
+        return this;
+    }
+    limitTo(limit) {
+        this._limitTo = limit;
+        return this;
+    }
+    whereGenresInclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.Genres,
+            comparison: KavitaComparison.MustContains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    whereGenresExclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.Genres,
+            comparison: KavitaComparison.NotContains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    wherePublicationStatusInclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.PublicationStatus,
+            comparison: KavitaComparison.Contains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    wherePublicationStatusExclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.PublicationStatus,
+            comparison: KavitaComparison.NotContains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    whereLibrariesInclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.Libraries,
+            comparison: KavitaComparison.Contains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    whereLibrariesExclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.Libraries,
+            comparison: KavitaComparison.NotContains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    whereFormatsContains(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.Formats,
+            comparison: KavitaComparison.Contains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    whereReleaseYear(comparison, year) {
+        const raw = year != null ? String(year).trim() : '';
+        if (!raw)
+            return this;
+        this._statements.push({
+            field: KavitaField.ReleaseYear,
+            comparison,
+            value: raw,
+        });
+        return this;
+    }
+    whereSeriesName(comparison, text) {
+        const raw = (text !== null && text !== void 0 ? text : '').trim();
+        if (!raw)
+            return this;
+        this._statements.push({
+            field: KavitaField.SeriesName,
+            comparison,
+            value: raw,
+        });
+        return this;
+    }
+    whereWantToRead(value) {
+        const normalized = typeof value === 'string' ? value.trim().toLowerCase() : value;
+        if (normalized === true || normalized === false) {
+            this._statements.push({
+                field: KavitaField.WantToRead,
+                comparison: KavitaComparison.Equal,
+                value: normalized ? 'true' : 'false',
+            });
         }
-
-        var stablePath =
-          'stable2:' + String(novel.path) + ':b' + bookOrdinals.get(bookId) + ':p' + page;
-
-        stableTargets.set(stablePath, oldPath);
-        return Object.assign({}, chapter, { path: stablePath });
-      });
-
-      return novel;
-    });
-  };
-
-  plugin.parseChapter = function (chapterPath) {
-    var path = String(chapterPath || '');
-    if (!path.startsWith('stable2:')) {
-      return originalParseChapter(path);
+        else if (normalized === 'true' || normalized === 'false') {
+            this._statements.push({
+                field: KavitaField.WantToRead,
+                comparison: KavitaComparison.Equal,
+                value: normalized,
+            });
+        }
+        return this;
     }
-
-    var target = stableTargets.get(path);
-    if (!target) {
-      throw new Error('Kavita stable chapter target is unavailable; refresh the novel first.');
+    whereTagsInclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.Tags,
+            comparison: KavitaComparison.MustContains,
+            value: ids.join(','),
+        });
+        return this;
     }
-
-    return originalParseChapter(target);
-  };
-})();
+    whereTagsExclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.Tags,
+            comparison: KavitaComparison.NotContains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    whereCollectionTagsInclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.CollectionTags,
+            comparison: KavitaComparison.Contains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    whereCollectionTagsExclude(ids) {
+        if (!ids || ids.length === 0)
+            return this;
+        this._statements.push({
+            field: KavitaField.CollectionTags,
+            comparison: KavitaComparison.NotContains,
+            value: ids.join(','),
+        });
+        return this;
+    }
+    build() {
+        return {
+            name: this._name,
+            combination: this._combination,
+            statements: this._statements,
+            sortOptions: {
+                sortField: this._sortField,
+                isAscending: this._sortAscending,
+            },
+            limitTo: this._limitTo,
+        };
+    }
+}
+// ========== PLUGIN ==========
+class KavitaApiPlugin {
+    constructor() {
+        this.id = 'kavita-api';
+        this.name = 'Kavita';
+        this.icon = 'src/multi/kavita/icon.png';
+        this.version = '0.0.11';
+        this.site = storage_1.storage.get('url');
+        this.apiKey = storage_1.storage.get('apiKey');
+        this._filtersLoaded = false;
+        this._presetFilterMap = new Map();
+        // ---- Filters exposed to the LNReader UI ----
+        this._filters = {
+            presetFilter: {
+                label: 'Preset filter',
+                type: filterInputs_1.FilterTypes.Picker,
+                options: [{ label: 'None', value: '' }],
+                value: '',
+            },
+            filterCombination: {
+                label: 'Filter combination',
+                type: filterInputs_1.FilterTypes.Picker,
+                options: [
+                    {
+                        label: 'Match any (OR)',
+                        value: String(KavitaCombination.MatchAny),
+                    },
+                    {
+                        label: 'Match all (AND)',
+                        value: String(KavitaCombination.MatchAll),
+                    },
+                ],
+                value: String(KavitaCombination.MatchAll),
+            },
+            sortField: {
+                label: 'Sort by',
+                type: filterInputs_1.FilterTypes.Picker,
+                options: [
+                    { label: 'Sort Name', value: String(KavitaSortField.SortName) },
+                    { label: 'Created', value: String(KavitaSortField.Created) },
+                    { label: 'Last Modified', value: String(KavitaSortField.LastModified) },
+                    { label: 'Item Added', value: String(KavitaSortField.ItemAdded) },
+                    { label: 'Time to Read', value: String(KavitaSortField.TimeToRead) },
+                    { label: 'Release Year', value: String(KavitaSortField.ReleaseYear) },
+                    { label: 'Last Read', value: String(KavitaSortField.LastRead) },
+                    {
+                        label: 'Average Rating',
+                        value: String(KavitaSortField.AverageRating),
+                    },
+                    { label: 'Random', value: String(KavitaSortField.Random) },
+                ],
+                value: String(KavitaSortField.SortName),
+            },
+            sortDirection: {
+                label: 'Sort direction',
+                type: filterInputs_1.FilterTypes.Picker,
+                options: [
+                    { label: 'Ascending', value: 'true' },
+                    { label: 'Descending', value: 'false' },
+                ],
+                value: 'true',
+            },
+            // ---------- Limit ----------
+            limitTo: {
+                label: 'Limit results (0 = no limit)',
+                type: filterInputs_1.FilterTypes.TextInput,
+                value: '0',
+            },
+            // ---------- Libraries (loaded from /api/library/libraries) ----------
+            libraries: {
+                label: 'Libraries',
+                type: filterInputs_1.FilterTypes.ExcludableCheckboxGroup,
+                options: [], // populated dynamically
+                value: {
+                    include: [],
+                    exclude: [],
+                },
+            },
+            // ---------- Publication Status (loaded from /api/metadata/publication-status) ----------
+            publicationStatus: {
+                label: 'Publication status',
+                type: filterInputs_1.FilterTypes.ExcludableCheckboxGroup,
+                options: [], // populated dynamically
+                value: {
+                    include: [],
+                    exclude: [],
+                },
+            },
+            collectionTags: {
+                label: 'Collections',
+                type: filterInputs_1.FilterTypes.ExcludableCheckboxGroup,
+                options: [], // populated dynamically
+                value: {
+                    include: [],
+                    exclude: [],
+                },
+            },
+            wantToRead: {
+                label: 'Want to read',
+                type: filterInputs_1.FilterTypes.Picker,
+                options: [
+                    { label: 'Any', value: '' },
+                    { label: 'Must be marked', value: 'true' },
+                    { label: 'Must NOT be marked', value: 'false' },
+                ],
+                value: '',
+            },
+            // ---------- Series Name ----------
+            seriesNameComparison: {
+                label: 'Series name operator',
+                type: filterInputs_1.FilterTypes.Picker,
+                options: [
+                    { label: 'Equal', value: String(KavitaComparison.Equal) },
+                    { label: 'Not equal', value: String(KavitaComparison.NotEqual) },
+                    { label: 'Begins with', value: String(KavitaComparison.BeginsWith) },
+                    { label: 'Ends with', value: String(KavitaComparison.EndsWith) },
+                    { label: 'Matches', value: String(KavitaComparison.Matches) },
+                ],
+                value: String(KavitaComparison.Matches),
+            },
+            seriesNameValue: {
+                label: 'Series name',
+                type: filterInputs_1.FilterTypes.TextInput,
+                value: '',
+            },
+            // ---------- Release Year ----------
+            releaseYearComparison: {
+                label: 'Release year operator',
+                type: filterInputs_1.FilterTypes.Picker,
+                options: [
+                    { label: 'Equal', value: String(KavitaComparison.Equal) },
+                    { label: 'Not equal', value: String(KavitaComparison.NotEqual) },
+                    { label: 'Less than', value: String(KavitaComparison.LessThan) },
+                    {
+                        label: 'Less than or equal',
+                        value: String(KavitaComparison.LessThanEqual),
+                    },
+                    { label: 'Greater than', value: String(KavitaComparison.GreaterThan) },
+                    {
+                        label: 'Greater than or equal',
+                        value: String(KavitaComparison.GreaterThanEqual),
+                    },
+                    { label: 'Is before', value: String(KavitaComparison.IsBefore) },
+                    { label: 'Is after', value: String(KavitaComparison.IsAfter) },
+                ],
+                value: String(KavitaComparison.Equal),
+            },
+            releaseYearValue: {
+                label: 'Release year',
+                type: filterInputs_1.FilterTypes.TextInput,
+                value: '',
+            },
+            // ---------- Genres (loaded from /api/metadata/genres) ----------
+            genres: {
+                label: 'Genres',
+                type: filterInputs_1.FilterTypes.ExcludableCheckboxGroup,
+                options: [], // populated dynamically
+                value: {
+                    include: [],
+                    exclude: [],
+                },
+            },
+            // ---------- Tags (loaded from /api/metadata/tags) ----------
+            tags: {
+                label: 'Tagy',
+                type: filterInputs_1.FilterTypes.ExcludableCheckboxGroup,
+                options: [], // populated dynamically
+                value: {
+                    include: [],
+                    exclude: [],
+                },
+            },
+        };
+        this.imageRequestInit = undefined;
+        this.webStorageUtilized = true;
+        this.jwtToken = null;
+        // ---------- BOOK / CHAPTER HELPERS ----------
+        // LNReader uses ChapterItem.path as the persistent chapter identity.
+        // Do not put Kavita's internal Book ID in that path: Kavita can assign
+        // a new Book ID when a monolithic EPUB is re-indexed.
+        this.chapterTargets = new Map();
+        this.resolveUrl = (path, isNovel) => {
+            if (path.startsWith('http'))
+                return path;
+            return `${this.baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;
+        };
+        this.pluginSettings = {
+            url: {
+                value: '',
+                label: 'Base URL (e.g. https://kavita.example.com)',
+                type: 'Text',
+            },
+            apiKey: {
+                value: '',
+                label: 'Kavita API Key (from Kavita → API / OPDS)',
+                type: 'Text',
+            },
+            // Formats – global toggles
+            formatEpub: {
+                value: false,
+                label: 'EPUB',
+                type: 'Switch',
+            },
+            formatPdf: {
+                value: false,
+                label: 'PDF',
+                type: 'Switch',
+            },
+            formatImage: {
+                value: false,
+                label: 'Image',
+                type: 'Switch',
+            },
+            formatArchive: {
+                value: false,
+                label: 'Archive',
+                type: 'Switch',
+            },
+        };
+    }
+    async ensureFilterOptionsLoaded() {
+        if (this._filtersLoaded)
+            return;
+        if (typeof fetch_1.fetchApi !== 'function') {
+            // The manifest build runs outside of LNReader and cannot hit the API.
+            this._filtersLoaded = true;
+            return;
+        }
+        await this.ensureToken();
+        try {
+            const presetFilters = await this.apiGet('/api/Filter');
+            this._presetFilterMap.clear();
+            const presetOptions = [
+                {
+                    label: 'None',
+                    value: '',
+                },
+            ];
+            for (const preset of presetFilters || []) {
+                if (!preset || preset.id == null || typeof preset.filter !== 'string')
+                    continue;
+                const idStr = String(preset.id);
+                this._presetFilterMap.set(idStr, preset.filter);
+                presetOptions.push({
+                    label: preset.name || `Filter ${idStr}`,
+                    value: idStr,
+                });
+            }
+            this._filters.presetFilter.options = presetOptions;
+        }
+        catch (e) {
+            console.warn('Kavita: failed to load preset filters', e);
+        }
+        try {
+            const tags = await this.apiGet('/api/metadata/tags');
+            this._filters.tags.options = tags.map(t => ({
+                label: t.title,
+                value: String(t.id),
+            }));
+        }
+        catch (e) {
+            console.warn('Kavita: failed to load tags', e);
+        }
+        try {
+            const genres = await this.apiGet('/api/metadata/genres');
+            this._filters.genres.options = genres.map(g => ({
+                label: g.title,
+                value: String(g.id),
+            }));
+        }
+        catch (e) {
+            console.warn('Kavita: failed to load genres', e);
+        }
+        try {
+            const statuses = await this.apiGet('/api/metadata/publication-status');
+            this._filters.publicationStatus.options = statuses.map(s => ({
+                label: s.title,
+                value: String(s.value),
+            }));
+        }
+        catch (e) {
+            console.warn('Kavita: failed to load publication statuses', e);
+        }
+        try {
+            const libraries = await this.apiGet('/api/library/libraries');
+            this._filters.libraries.options = libraries.map(l => ({
+                label: l.name,
+                value: String(l.id),
+            }));
+        }
+        catch (e) {
+            console.warn('Kavita: failed to load libraries', e);
+        }
+        try {
+            const collections = await this.apiGet('/api/collection?ownedOnly=false');
+            this._filters.collectionTags.options = collections.map(c => ({
+                label: c.title,
+                value: String(c.id),
+            }));
+        }
+        catch (e) {
+            console.warn('Kavita: failed to load collections', e);
+        }
+        this._filtersLoaded = true;
+    }
+    async decodePresetFilter(encodedFilter) {
+        var _a, _b;
+        if (!encodedFilter)
+            return null;
+        await this.ensureToken();
+        let text;
+        try {
+            const res = await (0, fetch_1.fetchApi)(`${this.baseUrl}/api/Filter/decode`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    ...this.getAuthHeaders(),
+                },
+                body: JSON.stringify({ encodedFilter }),
+            });
+            text = await res.text();
+        }
+        catch (e) {
+            console.warn('Kavita: failed to decode preset filter (request)', e);
+            return null;
+        }
+        try {
+            const parsed = JSON.parse(text);
+            const combinationValue = Number(parsed === null || parsed === void 0 ? void 0 : parsed.combination);
+            const combination = combinationValue === KavitaCombination.MatchAny
+                ? KavitaCombination.MatchAny
+                : KavitaCombination.MatchAll;
+            const statements = Array.isArray(parsed === null || parsed === void 0 ? void 0 : parsed.statements)
+                ? parsed.statements
+                    .map((stmt) => {
+                    const field = Number(stmt === null || stmt === void 0 ? void 0 : stmt.field);
+                    const comparison = Number(stmt === null || stmt === void 0 ? void 0 : stmt.comparison);
+                    if (Number.isNaN(field) || Number.isNaN(comparison))
+                        return null;
+                    return {
+                        field: field,
+                        comparison: comparison,
+                        value: (stmt === null || stmt === void 0 ? void 0 : stmt.value) === null || (stmt === null || stmt === void 0 ? void 0 : stmt.value) === undefined
+                            ? undefined
+                            : String(stmt.value),
+                    };
+                })
+                    .filter(Boolean)
+                : [];
+            const sortFieldRaw = Number((_a = parsed === null || parsed === void 0 ? void 0 : parsed.sortOptions) === null || _a === void 0 ? void 0 : _a.sortField);
+            const sortAscendingRaw = (_b = parsed === null || parsed === void 0 ? void 0 : parsed.sortOptions) === null || _b === void 0 ? void 0 : _b.isAscending;
+            const sortAscending = typeof sortAscendingRaw === 'boolean'
+                ? sortAscendingRaw
+                : typeof sortAscendingRaw === 'string'
+                    ? sortAscendingRaw.toLowerCase() === 'true'
+                    : true;
+            const sortOptions = {
+                sortField: Number.isNaN(sortFieldRaw)
+                    ? KavitaSortField.SortName
+                    : sortFieldRaw,
+                isAscending: sortAscending,
+            };
+            const limitToRaw = Number(parsed === null || parsed === void 0 ? void 0 : parsed.limitTo);
+            const id = typeof (parsed === null || parsed === void 0 ? void 0 : parsed.id) === 'number' && Number.isFinite(parsed.id)
+                ? parsed.id
+                : undefined;
+            return {
+                id,
+                name: (parsed === null || parsed === void 0 ? void 0 : parsed.name) || 'Preset filter',
+                combination,
+                statements,
+                sortOptions,
+                limitTo: Number.isNaN(limitToRaw) ? 0 : limitToRaw,
+            };
+        }
+        catch (e) {
+            console.warn('Kavita: failed to decode preset filter (parse)', e, text);
+            return null;
+        }
+    }
+    get filters() {
+        // Always kick off lazy loading so the options appear as soon as possible.
+        void this.ensureFilterOptionsLoaded();
+        return this._filters;
+    }
+    get baseUrl() {
+        return this.site;
+    }
+    getBoolSetting(key, defaultVal) {
+        const raw = storage_1.storage.get(key);
+        if (typeof raw === 'boolean')
+            return raw;
+        if (typeof raw === 'string') {
+            const v = raw.toLowerCase().trim();
+            if (['true', '1', 'yes', 'on'].includes(v))
+                return true;
+            if (['false', '0', 'no', 'off'].includes(v))
+                return false;
+        }
+        return defaultVal;
+    }
+    // ---------- AUTH / REQUEST HELPERY ----------
+    async ensureToken() {
+        if (this.jwtToken)
+            return;
+        if (typeof fetch_1.fetchApi !== 'function') {
+            throw new Error('fetchApi is not available in this runtime');
+        }
+        const url = `${this.baseUrl}/api/Plugin/authenticate?apiKey=${encodeURIComponent(this.apiKey)}&pluginName=lnreader-kavita`;
+        const res = await (0, fetch_1.fetchApi)(url, { method: 'POST' });
+        const text = await res.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        }
+        catch {
+            throw new Error(`Authentication failed, non-JSON response: ${text}`);
+        }
+        if (!(data === null || data === void 0 ? void 0 : data.token)) {
+            throw new Error('Authentication failed: token missing in response');
+        }
+        console.log(`Kavita API: Authenticated successfully - ${data.token}`);
+        this.jwtToken = data.token;
+    }
+    getAuthHeaders() {
+        return this.jwtToken ? { Authorization: `Bearer ${this.jwtToken}` } : {};
+    }
+    async apiGet(path) {
+        await this.ensureToken();
+        const url = path.startsWith('http')
+            ? path
+            : `${this.baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;
+        const res = await (0, fetch_1.fetchApi)(url, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                ...this.getAuthHeaders(),
+            },
+        });
+        const text = await res.text();
+        try {
+            return JSON.parse(text);
+        }
+        catch {
+            return text;
+        }
+    }
+    // ---------- POPULAR NOVELS WITH FILTER SUPPORT ----------
+    async popularNovels(pageNo, { showLatestNovels, filters, }) {
+        var _a, _b, _c;
+        await this.ensureToken();
+        await this.ensureFilterOptionsLoaded();
+        const pageSize = 30;
+        const presetFilterRaw = filters === null || filters === void 0 ? void 0 : filters.presetFilter;
+        const presetFilterId = presetFilterRaw &&
+            presetFilterRaw.type === filterInputs_1.FilterTypes.Picker &&
+            typeof presetFilterRaw.value === 'string'
+            ? presetFilterRaw.value.trim()
+            : '';
+        let presetFilterBody = null;
+        if (presetFilterId) {
+            const encodedPreset = this._presetFilterMap.get(presetFilterId);
+            if (encodedPreset) {
+                presetFilterBody = await this.decodePresetFilter(encodedPreset);
+            }
+            else {
+                console.warn(`Kavita: preset filter ${presetFilterId} missing from cache`);
+            }
+        }
+        const presetFilterSelected = Boolean(presetFilterId);
+        let hasUserFilters = presetFilterSelected;
+        let body;
+        if (presetFilterBody) {
+            hasUserFilters = true;
+            body = presetFilterBody;
+        }
+        else if (presetFilterSelected) {
+            body = new KavitaFilterBuilder('LNReader: Preset (fallback)')
+                .combination(KavitaCombination.MatchAll)
+                .sortBy(KavitaSortField.SortName, true)
+                .limitTo(0)
+                .build();
+        }
+        else {
+            // Build a FilterV2 body that mirrors what the Kavita web UI would receive.
+            // Helper to apply include/exclude arrays from the ExcludableCheckboxGroup filters.
+            const applyIncludeExcludeFilter = (key, includeHandler, excludeHandler) => {
+                const raw = filters === null || filters === void 0 ? void 0 : filters[key];
+                if (!raw ||
+                    raw.type !== filterInputs_1.FilterTypes.ExcludableCheckboxGroup ||
+                    typeof raw !== 'object') {
+                    return false;
+                }
+                const value = (raw.value || {});
+                let updated = false;
+                const includeIds = Array.isArray(value.include) ? value.include : [];
+                if (includeIds.length > 0) {
+                    includeHandler(includeIds);
+                    updated = true;
+                }
+                const excludeIds = Array.isArray(value.exclude) ? value.exclude : [];
+                if (excludeIds.length > 0) {
+                    excludeHandler(excludeIds);
+                    updated = true;
+                }
+                return updated;
+            };
+            // 1) read combination from Picker
+            let combination = KavitaCombination.MatchAll;
+            const combinationRaw = filters === null || filters === void 0 ? void 0 : filters.filterCombination;
+            if (combinationRaw &&
+                combinationRaw.type === filterInputs_1.FilterTypes.Picker &&
+                typeof combinationRaw.value === 'string') {
+                const parsed = Number(combinationRaw.value);
+                if (parsed === KavitaCombination.MatchAny ||
+                    parsed === KavitaCombination.MatchAll) {
+                    combination = parsed;
+                }
+            }
+            // Track whether the user actually set any filter (genres/status/libraries/year/name/tags)
+            hasUserFilters = false;
+            // --- Result limit ---
+            let limitTo = 0;
+            const limitToRaw = filters === null || filters === void 0 ? void 0 : filters.limitTo;
+            if (limitToRaw && limitToRaw.type === filterInputs_1.FilterTypes.TextInput) {
+                const raw = String((_a = limitToRaw.value) !== null && _a !== void 0 ? _a : '').trim();
+                if (raw) {
+                    const parsed = Number(raw);
+                    if (Number.isFinite(parsed) && parsed >= 0) {
+                        limitTo = parsed;
+                        if (parsed > 0)
+                            hasUserFilters = true;
+                    }
+                }
+            }
+            // --- Sorting (Picker + Picker) ---
+            let sortField = KavitaSortField.SortName;
+            let sortAscending = true;
+            const sortFieldRaw = filters === null || filters === void 0 ? void 0 : filters.sortField;
+            if (sortFieldRaw &&
+                sortFieldRaw.type === filterInputs_1.FilterTypes.Picker &&
+                typeof sortFieldRaw.value === 'string') {
+                const parsed = Number(sortFieldRaw.value);
+                if (!Number.isNaN(parsed)) {
+                    sortField = parsed;
+                }
+            }
+            const sortDirectionRaw = filters === null || filters === void 0 ? void 0 : filters.sortDirection;
+            if (sortDirectionRaw &&
+                sortDirectionRaw.type === filterInputs_1.FilterTypes.Picker &&
+                typeof sortDirectionRaw.value === 'string') {
+                sortAscending = sortDirectionRaw.value.toLowerCase() === 'true';
+            }
+            if (sortField !== KavitaSortField.SortName || sortAscending !== true) {
+                hasUserFilters = true;
+            }
+            // 2) builder pro FilterV2Dto
+            const fb = new KavitaFilterBuilder('LNReader: Recently Added')
+                .combination(combination)
+                .sortBy(sortField, sortAscending)
+                .limitTo(limitTo);
+            if (applyIncludeExcludeFilter('genres', ids => fb.whereGenresInclude(ids), ids => fb.whereGenresExclude(ids))) {
+                hasUserFilters = true;
+            }
+            if (applyIncludeExcludeFilter('publicationStatus', ids => fb.wherePublicationStatusInclude(ids), ids => fb.wherePublicationStatusExclude(ids))) {
+                hasUserFilters = true;
+            }
+            if (applyIncludeExcludeFilter('libraries', ids => fb.whereLibrariesInclude(ids), ids => fb.whereLibrariesExclude(ids))) {
+                hasUserFilters = true;
+            }
+            // --- Release Year (TextInput + Picker) ---
+            const releaseYearValueRaw = filters === null || filters === void 0 ? void 0 : filters.releaseYearValue;
+            const releaseYearComparisonRaw = filters === null || filters === void 0 ? void 0 : filters.releaseYearComparison;
+            if (releaseYearValueRaw &&
+                releaseYearValueRaw.type === filterInputs_1.FilterTypes.TextInput) {
+                const rawYear = ((_b = releaseYearValueRaw.value) !== null && _b !== void 0 ? _b : '').trim();
+                if (rawYear) {
+                    let comparison = KavitaComparison.Equal;
+                    if (releaseYearComparisonRaw &&
+                        releaseYearComparisonRaw.type === filterInputs_1.FilterTypes.Picker &&
+                        typeof releaseYearComparisonRaw.value === 'string') {
+                        const parsed = Number(releaseYearComparisonRaw.value);
+                        if (!Number.isNaN(parsed)) {
+                            comparison = parsed;
+                        }
+                    }
+                    fb.whereReleaseYear(comparison, rawYear);
+                    hasUserFilters = true;
+                }
+            }
+            // --- Series Name (TextInput + Picker) ---
+            const seriesNameValueRaw = filters === null || filters === void 0 ? void 0 : filters.seriesNameValue;
+            const seriesNameComparisonRaw = filters === null || filters === void 0 ? void 0 : filters.seriesNameComparison;
+            if (seriesNameValueRaw &&
+                seriesNameValueRaw.type === filterInputs_1.FilterTypes.TextInput) {
+                const rawName = ((_c = seriesNameValueRaw.value) !== null && _c !== void 0 ? _c : '').trim();
+                if (rawName) {
+                    let comparison = KavitaComparison.Matches;
+                    if (seriesNameComparisonRaw &&
+                        seriesNameComparisonRaw.type === filterInputs_1.FilterTypes.Picker &&
+                        typeof seriesNameComparisonRaw.value === 'string') {
+                        const parsed = Number(seriesNameComparisonRaw.value);
+                        if (!Number.isNaN(parsed)) {
+                            comparison = parsed;
+                        }
+                    }
+                    fb.whereSeriesName(comparison, rawName);
+                    hasUserFilters = true;
+                }
+            }
+            if (applyIncludeExcludeFilter('tags', ids => fb.whereTagsInclude(ids), ids => fb.whereTagsExclude(ids))) {
+                hasUserFilters = true;
+            }
+            if (applyIncludeExcludeFilter('collectionTags', ids => fb.whereCollectionTagsInclude(ids), ids => fb.whereCollectionTagsExclude(ids))) {
+                hasUserFilters = true;
+            }
+            // --- Want To Read (Picker) ---
+            const wantToReadRaw = filters === null || filters === void 0 ? void 0 : filters.wantToRead;
+            if (wantToReadRaw &&
+                wantToReadRaw.type === filterInputs_1.FilterTypes.Picker &&
+                typeof wantToReadRaw.value === 'string') {
+                const v = wantToReadRaw.value.trim().toLowerCase();
+                if (v === 'true' || v === 'false') {
+                    fb.whereWantToRead(v);
+                    hasUserFilters = true;
+                }
+            }
+            // --- Formats sourced from pluginSettings (Switch) ---
+            // These are global toggles, not per-request filters, so they do not flip hasUserFilters.
+            const formatImageOn = this.getBoolSetting('formatImage', false);
+            const formatArchiveOn = this.getBoolSetting('formatArchive', false);
+            const formatEpubOn = this.getBoolSetting('formatEpub', false);
+            const formatPdfOn = this.getBoolSetting('formatPdf', false);
+            const selectedFormatIds = [];
+            // Map the boolean switches to the numeric identifiers used by Kavita.
+            if (formatImageOn)
+                selectedFormatIds.push('0'); // Image
+            if (formatArchiveOn)
+                selectedFormatIds.push('1'); // Archive
+            if (formatEpubOn)
+                selectedFormatIds.push('3'); // EPUB
+            if (formatPdfOn)
+                selectedFormatIds.push('4'); // PDF
+            if (selectedFormatIds.length > 0) {
+                fb.whereFormatsContains(selectedFormatIds);
+                // hasUserFilters stays unchanged because this is a global preference
+            }
+            body = fb.build();
+        }
+        console.log('Kavita API: popularNovels', {
+            pageNo,
+            showLatestNovels,
+            hasUserFilters,
+            usingPresetFilter: Boolean(presetFilterBody),
+            presetFilterSelected,
+        });
+        // When the "latest" toggle is on and no filters were supplied, hit the dedicated endpoint.
+        const useLatestEndpoint = showLatestNovels && !hasUserFilters;
+        const endpoint = useLatestEndpoint
+            ? '/api/Series/recently-added-v2'
+            : '/api/Series/v2';
+        const url = `${this.baseUrl}${endpoint}?PageNumber=${pageNo}&PageSize=${pageSize}`;
+        const res = await (0, fetch_1.fetchApi)(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'text/plain',
+                'Content-Type': 'application/json',
+                ...this.getAuthHeaders(),
+            },
+            body: JSON.stringify(body),
+        });
+        const text = await res.text();
+        let data = [];
+        try {
+            data = JSON.parse(text);
+        }
+        catch {
+            console.warn('Kavita API: popularNovels - invalid JSON response');
+            return [];
+        }
+        const novels = (data || []).map((series) => {
+            var _a, _b, _c;
+            const seriesId = (_a = series.id) !== null && _a !== void 0 ? _a : series.seriesId;
+            const name = (_c = (_b = series.name) !== null && _b !== void 0 ? _b : series.seriesName) !== null && _c !== void 0 ? _c : 'Unknown series';
+            const cover = seriesId
+                ? `${this.baseUrl}/api/image/series-cover?seriesId=${seriesId}${this.apiKey ? `&apiKey=${this.apiKey}` : ''}`
+                : defaultCover_1.defaultCover;
+            return {
+                name,
+                path: String(seriesId),
+                cover,
+            };
+        });
+        return novels;
+    }
+    stableBookKey(bookInfo, chapter, volume) {
+        var _a, _b, _c, _d, _e, _f;
+        const title = (_d = (_c = (_b = (_a = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.bookTitle) !== null && _a !== void 0 ? _a : chapter === null || chapter === void 0 ? void 0 : chapter.titleName) !== null && _b !== void 0 ? _b : volume === null || volume === void 0 ? void 0 : volume.name) !== null && _c !== void 0 ? _c : volume === null || volume === void 0 ? void 0 : volume.title) !== null && _d !== void 0 ? _d : 'book';
+        const volumeNumber = (_f = (_e = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.volumeNumber) !== null && _e !== void 0 ? _e : volume === null || volume === void 0 ? void 0 : volume.number) !== null && _f !== void 0 ? _f : '';
+        // For the normal monolithic-EPUB case this stays unchanged when Kavita
+        // re-indexes the file, while still separating distinct books/volumes.
+        return `${String(title)}\u001f${String(volumeNumber)}`;
+    }
+    makeStableChapterPath(seriesId, bookKey, page) {
+        return `stable2:${seriesId}:${encodeURIComponent(bookKey)}:${page}`;
+    }
+    parseStableChapterPath(chapterPath) {
+        const match = /^stable2:(\d+):([^:]+):(\d+)$/.exec(chapterPath);
+        if (!match)
+            return null;
+        const seriesId = Number(match[1]);
+        const page = Number(match[3]);
+        if (!Number.isFinite(seriesId) || !Number.isFinite(page))
+            return null;
+        try {
+            return {
+                seriesId,
+                bookKey: decodeURIComponent(match[2]),
+                page,
+            };
+        }
+        catch {
+            return null;
+        }
+    }
+    async resolveStableChapterTarget(seriesId, bookKey, page, headers) {
+        var _a, _b, _c, _d;
+        const stablePath = this.makeStableChapterPath(seriesId, bookKey, page);
+        const cached = this.chapterTargets.get(stablePath);
+        if (cached)
+            return cached;
+        const volumesRes = await (0, fetch_1.fetchApi)(`${this.site}/api/Series/volumes?seriesId=${seriesId}`, { headers });
+        const volumes = await volumesRes.json();
+        for (const vol of Array.isArray(volumes) ? volumes : []) {
+            for (const ch of (_a = vol.chapters) !== null && _a !== void 0 ? _a : []) {
+                if (!(ch === null || ch === void 0 ? void 0 : ch.id))
+                    continue;
+                const bookInfo = await (0, fetch_1.fetchApi)(`${this.site}/api/Book/${ch.id}/book-info`, { headers }).then(res => res.json());
+                const currentBookKey = this.stableBookKey(bookInfo, ch, vol);
+                if (currentBookKey !== bookKey)
+                    continue;
+                const totalPages = Number((_d = (_c = (_b = bookInfo.pages) !== null && _b !== void 0 ? _b : ch.pages) !== null && _c !== void 0 ? _c : vol.pages) !== null && _d !== void 0 ? _d : 0);
+                if (page < 0 || page >= totalPages)
+                    return null;
+                const target = { chapterId: Number(ch.id), page };
+                this.chapterTargets.set(stablePath, target);
+                return target;
+            }
+        }
+        return null;
+    }
+    flattenBookChapters(toc) {
+        const flat = [];
+        const walk = (item) => {
+            var _a;
+            if (typeof item.page === 'number') {
+                flat.push({
+                    page: item.page,
+                    title: (_a = item.title) !== null && _a !== void 0 ? _a : '',
+                });
+            }
+            if (Array.isArray(item.children)) {
+                item.children.forEach(walk);
+            }
+        };
+        if (Array.isArray(toc)) {
+            toc.forEach(walk);
+        }
+        flat.sort((a, b) => a.page - b.page);
+        return flat;
+    }
+    getTitleForPage(flatToc, page) {
+        let current = null;
+        for (const item of flatToc) {
+            if (item.page <= page) {
+                current = item.title || null;
+            }
+            else {
+                break;
+            }
+        }
+        return current;
+    }
+    // ---------- PARSE NOVEL ----------
+    async parseNovel(novelPath) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
+        await this.ensureToken();
+        const headers = {
+            Accept: 'application/json',
+            ...this.getAuthHeaders(),
+        };
+        const seriesId = Number(novelPath.startsWith('/api/Series/')
+            ? novelPath.split('/').pop()
+            : novelPath);
+        const [seriesRes, metaRes, volumesRes] = await Promise.all([
+            // Pull the core series objects in parallel to minimize round-trips.
+            (0, fetch_1.fetchApi)(`${this.site}/api/Series/${seriesId}`, { headers }),
+            (0, fetch_1.fetchApi)(`${this.site}/api/Series/metadata?seriesId=${seriesId}`, {
+                headers,
+            }),
+            (0, fetch_1.fetchApi)(`${this.site}/api/Series/volumes?seriesId=${seriesId}`, {
+                headers,
+            }),
+        ]);
+        const series = await seriesRes.json();
+        const metadata = await metaRes.json();
+        const volumes = await volumesRes.json();
+        const novel = {
+            path: String(seriesId),
+            name: (_b = (_a = series.name) !== null && _a !== void 0 ? _a : metadata.title) !== null && _b !== void 0 ? _b : 'Untitled',
+            cover: `${this.site}/api/image/series-cover?seriesId=${seriesId}${this.apiKey ? `&apiKey=${this.apiKey}` : ''}`,
+            chapters: [],
+        };
+        // ---------- author ----------
+        if (Array.isArray(metadata.people) && metadata.people.length) {
+            const writers = metadata.people.filter((p) => String(p.role || '')
+                .toLowerCase()
+                .includes('writer'));
+            if (writers.length) {
+                novel.author = writers.map((w) => w.name).join(', ');
+            }
+        }
+        else {
+            const firstVolume = Array.isArray(volumes) ? volumes[0] : null;
+            const firstChapter = firstVolume && Array.isArray(firstVolume.chapters)
+                ? firstVolume.chapters[0]
+                : null;
+            if (firstChapter && Array.isArray(firstChapter.writers)) {
+                novel.author = firstChapter.writers.map((w) => w.name).join(', ');
+            }
+        }
+        // ---------- status ----------
+        switch (metadata.publicationStatus) {
+            case 0:
+                novel.status = novelStatus_1.NovelStatus.Ongoing;
+                break;
+            case 1:
+                novel.status = novelStatus_1.NovelStatus.OnHiatus;
+                break;
+            case 2:
+                novel.status = novelStatus_1.NovelStatus.Completed;
+                break;
+            case 3:
+                novel.status = novelStatus_1.NovelStatus.Cancelled;
+                break;
+            default:
+                novel.status = novelStatus_1.NovelStatus.Unknown;
+        }
+        // ---------- genres ----------
+        if (Array.isArray(metadata.genres) && metadata.genres.length) {
+            novel.genres = metadata.genres
+                .map((g) => { var _a, _b, _c; return (_c = (_b = (_a = g.title) !== null && _a !== void 0 ? _a : g.name) !== null && _b !== void 0 ? _b : g.label) !== null && _c !== void 0 ? _c : g.value; })
+                .filter(Boolean)
+                .join(', ');
+        }
+        else {
+            const genreSet = new Set();
+            for (const vol of volumes) {
+                for (const ch of (_c = vol.chapters) !== null && _c !== void 0 ? _c : []) {
+                    for (const g of (_d = ch.genres) !== null && _d !== void 0 ? _d : []) {
+                        const title = (_e = g.title) !== null && _e !== void 0 ? _e : g.name;
+                        if (title)
+                            genreSet.add(title);
+                    }
+                }
+            }
+            if (genreSet.size) {
+                novel.genres = Array.from(genreSet).join(', ');
+            }
+        }
+        // ---------- summary ----------
+        novel.summary =
+            (_j = (_h = (_g = (_f = metadata.summary) !== null && _f !== void 0 ? _f : metadata.description) !== null && _g !== void 0 ? _g : series.summary) !== null && _h !== void 0 ? _h : series.description) !== null && _j !== void 0 ? _j : undefined;
+        // ---------- rating ----------
+        const rating = (_m = (_l = (_k = metadata.userRating) !== null && _k !== void 0 ? _k : metadata.averageRating) !== null && _l !== void 0 ? _l : series.userRating) !== null && _m !== void 0 ? _m : series.averageRating;
+        if (typeof rating === 'number')
+            novel.rating = rating;
+        const status = (_q = (_p = (_o = metadata.seriesStatus) !== null && _o !== void 0 ? _o : metadata.status) !== null && _p !== void 0 ? _p : series.status) !== null && _q !== void 0 ? _q : series.seriesStatus;
+        if (status)
+            novel.status = String(status);
+        // ---------- chapters: treat every page as an individual chapter ----------
+        const chapters = [];
+        let globalIndex = 1;
+        for (const vol of volumes) {
+            const volChapters = (_r = vol.chapters) !== null && _r !== void 0 ? _r : [];
+            if (!volChapters.length)
+                continue;
+            // Each page inside every book becomes one LNReader chapter entry.
+            for (const ch of volChapters) {
+                const chapterId = ch.id;
+                if (!chapterId)
+                    continue;
+                const [bookInfo, tocJson] = await Promise.all([
+                    (0, fetch_1.fetchApi)(`${this.site}/api/Book/${chapterId}/book-info`, {
+                        headers,
+                    }).then(res => res.json()),
+                    (0, fetch_1.fetchApi)(`${this.site}/api/Book/${chapterId}/chapters`, {
+                        headers,
+                    }).then(res => res.json()),
+                ]);
+                const totalPages = (_u = (_t = (_s = bookInfo.pages) !== null && _s !== void 0 ? _s : ch.pages) !== null && _t !== void 0 ? _t : vol.pages) !== null && _u !== void 0 ? _u : 0;
+                if (!totalPages)
+                    continue;
+                const flatToc = this.flattenBookChapters(tocJson);
+                const bookKey = this.stableBookKey(bookInfo, ch, vol);
+                for (let page = 0; page < totalPages; page++) {
+                    const tocTitle = this.getTitleForPage(flatToc, page);
+                    // Use Kavita's actual TOC title unchanged. The EPUB cleaner is
+                    // responsible for normalizing chapter names when desired; this plugin
+                    // should not add/remove the novel title or page-count prefix.
+                    const chapterName = (tocTitle || `Chapter ${page + 1}`).trim();
+                    const stablePath = this.makeStableChapterPath(seriesId, bookKey, page);
+                    this.chapterTargets.set(stablePath, {
+                        chapterId: Number(chapterId),
+                        page,
+                    });
+                    chapters.push({
+                        name: chapterName,
+                        path: stablePath,
+                        chapterNumber: globalIndex++,
+                        releaseTime: (_y = (_x = (_w = ch.releaseDate) !== null && _w !== void 0 ? _w : ch.created) !== null && _x !== void 0 ? _x : ch.createdUtc) !== null && _y !== void 0 ? _y : null,
+                    });
+                }
+            }
+        }
+        novel.chapters = chapters;
+        return novel;
+    }
+    // ---------- PARSE CHAPTER ----------
+    async parseChapter(chapterPath) {
+        await this.ensureToken();
+        const headers = {
+            Accept: 'text/plain,application/json',
+            ...this.getAuthHeaders(),
+        };
+        const stable = this.parseStableChapterPath(chapterPath);
+        let target = null;
+        if (stable) {
+            target = await this.resolveStableChapterTarget(stable.seriesId, stable.bookKey, stable.page, headers);
+            if (!target) {
+                throw new Error(`Could not resolve stable chapterPath: ${chapterPath}`);
+            }
+        }
+        else {
+            // Backwards compatibility for paths created by older plugin versions.
+            const [chapterIdStr, pageStr] = chapterPath.split(':');
+            const chapterId = Number(chapterIdStr);
+            const page = Number(pageStr || '0');
+            if (!chapterId || Number.isNaN(chapterId)) {
+                throw new Error(`Invalid chapterPath: ${chapterPath}`);
+            }
+            target = { chapterId, page };
+        }
+        const res = await (0, fetch_1.fetchApi)(`${this.site}/api/Book/${target.chapterId}/book-page?page=${target.page}`, { headers });
+        return await res.text();
+    }
+    // ---------- SEARCH ----------
+    async searchNovels(searchTerm, pageNo) {
+        const query = searchTerm.trim();
+        if (!query) {
+            return [];
+        }
+        await this.ensureToken();
+        const pageSize = 12;
+        const currentPage = Math.max(pageNo || 1, 1);
+        const fb = new KavitaFilterBuilder('LNReader: Search')
+            .combination(KavitaCombination.MatchAll)
+            .sortBy(KavitaSortField.SortName, true)
+            .limitTo(0)
+            .whereSeriesName(KavitaComparison.Matches, query);
+        const formatImageOn = this.getBoolSetting('formatImage', false);
+        const formatArchiveOn = this.getBoolSetting('formatArchive', false);
+        const formatEpubOn = this.getBoolSetting('formatEpub', true);
+        const formatPdfOn = this.getBoolSetting('formatPdf', true);
+        const selectedFormatIds = [];
+        if (formatImageOn)
+            selectedFormatIds.push('0'); // Image
+        if (formatArchiveOn)
+            selectedFormatIds.push('1'); // Archive
+        if (formatEpubOn)
+            selectedFormatIds.push('3'); // EPUB
+        if (formatPdfOn)
+            selectedFormatIds.push('4'); // PDF
+        if (selectedFormatIds.length > 0) {
+            fb.whereFormatsContains(selectedFormatIds);
+        }
+        const body = fb.build();
+        const url = `${this.baseUrl}/api/Series/v2?PageNumber=${currentPage}&PageSize=${pageSize}`;
+        const res = await (0, fetch_1.fetchApi)(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'text/plain',
+                'Content-Type': 'application/json',
+                ...this.getAuthHeaders(),
+            },
+            body: JSON.stringify(body),
+        });
+        const text = await res.text();
+        let data = [];
+        try {
+            data = JSON.parse(text);
+        }
+        catch {
+            console.warn('Kavita API: searchNovels - invalid JSON response');
+            return [];
+        }
+        const seriesResults = Array.isArray(data)
+            ? data
+            : (data === null || data === void 0 ? void 0 : data.series) || (data === null || data === void 0 ? void 0 : data.seriesResults) || (data === null || data === void 0 ? void 0 : data.seriesDtos) || [];
+        const novels = seriesResults
+            .filter(Boolean)
+            .map((series) => {
+            var _a, _b, _c;
+            const seriesId = (_a = series === null || series === void 0 ? void 0 : series.seriesId) !== null && _a !== void 0 ? _a : series === null || series === void 0 ? void 0 : series.id;
+            const name = (_c = (_b = series === null || series === void 0 ? void 0 : series.name) !== null && _b !== void 0 ? _b : series === null || series === void 0 ? void 0 : series.seriesName) !== null && _c !== void 0 ? _c : 'Unknown series';
+            const cover = seriesId
+                ? `${this.baseUrl}/api/image/series-cover?seriesId=${seriesId}${this.apiKey ? `&apiKey=${this.apiKey}` : ''}`
+                : defaultCover_1.defaultCover;
+            return {
+                name,
+                path: String(seriesId),
+                cover,
+            };
+        });
+        return novels;
+    }
+}
+exports.default = new KavitaApiPlugin();
