@@ -302,7 +302,7 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   id = 'kavita-api';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.12';
+  version = '0.0.13';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 
@@ -1455,9 +1455,12 @@ class KavitaApiPlugin implements Plugin.PluginBase {
         for (let page = 0; page < totalPages; page++) {
           const tocTitle = this.getTitleForPage(flatToc, page);
 
-          // Use Kavita's actual TOC title unchanged. Do not add the
-          // page/total prefix or the novel/volume title.
-          const chapterName = (tocTitle || `Chapter ${page + 1}`).trim();
+          // Use Kavita's TOC title, but remove a leading page-count prefix
+          // such as "1 / 450 - " if Kavita has embedded it in the title.
+          // Do not otherwise rewrite the title.
+          const chapterName = (tocTitle || `Chapter ${page + 1}`)
+            .replace(/^\s*\d+\s*\/\s*\d+\s*(?:-\s*)?/, '')
+            .trim() || `Chapter ${page + 1}`;
 
           const stablePath = this.makeStableChapterPath(
             seriesId,
