@@ -302,7 +302,7 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   id = 'kavita-api';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.11';
+  version = '0.0.12';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 
@@ -1455,9 +1455,8 @@ class KavitaApiPlugin implements Plugin.PluginBase {
         for (let page = 0; page < totalPages; page++) {
           const tocTitle = this.getTitleForPage(flatToc, page);
 
-          // Use Kavita's actual TOC title unchanged. The EPUB cleaner is
-          // responsible for normalizing chapter names when desired; this plugin
-          // should not add/remove the novel title or page-count prefix.
+          // Use Kavita's actual TOC title unchanged. Do not add the
+          // page/total prefix or the novel/volume title.
           const chapterName = (tocTitle || `Chapter ${page + 1}`).trim();
 
           const stablePath = this.makeStableChapterPath(
