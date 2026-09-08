@@ -299,10 +299,10 @@ class KavitaFilterBuilder {
 // ========== PLUGIN ==========
 
 class KavitaApiPlugin implements Plugin.PluginBase {
-  id = 'kavita-api';
+  id = 'kavita-api-k';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.14';
+  version = '0.0.15';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 

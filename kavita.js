@@ -268,10 +268,10 @@ class KavitaFilterBuilder {
 // ========== PLUGIN ==========
 class KavitaApiPlugin {
     constructor() {
-        this.id = 'kavita-api';
+        this.id = 'kavita-api-k';
         this.name = 'Kavita';
         this.icon = 'src/multi/kavita/icon.png';
-        this.version = '0.0.14';
+        this.version = '0.0.15';
         this.site = storage_1.storage.get('url');
         this.apiKey = storage_1.storage.get('apiKey');
         this._filtersLoaded = false;
