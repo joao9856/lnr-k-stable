@@ -271,7 +271,7 @@ class KavitaApiPlugin {
         this.id = 'kavita-api';
         this.name = 'Kavita';
         this.icon = 'src/multi/kavita/icon.png';
-        this.version = '0.0.12';
+        this.version = '0.0.14';
         this.site = storage_1.storage.get('url');
         this.apiKey = storage_1.storage.get('apiKey');
         this._filtersLoaded = false;
