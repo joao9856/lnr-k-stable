@@ -271,7 +271,7 @@ class KavitaApiPlugin {
         this.id = 'kavita-api-k';
         this.name = 'Kavita';
         this.icon = 'src/multi/kavita/icon.png';
-        this.version = '0.0.15';
+        this.version = '0.0.16';
         this.site = storage_1.storage.get('url');
         this.apiKey = storage_1.storage.get('apiKey');
         this._filtersLoaded = false;
@@ -681,7 +681,7 @@ class KavitaApiPlugin {
         try {
             data = JSON.parse(text);
         }
-        catch {
+        catch (_a) {
             throw new Error(`Authentication failed, non-JSON response: ${text}`);
         }
         if (!(data === null || data === void 0 ? void 0 : data.token)) {
@@ -709,7 +709,7 @@ class KavitaApiPlugin {
         try {
             return JSON.parse(text);
         }
-        catch {
+        catch (_a) {
             return text;
         }
     }
@@ -942,7 +942,7 @@ class KavitaApiPlugin {
         try {
             data = JSON.parse(text);
         }
-        catch {
+        catch (_d) {
             console.warn('Kavita API: popularNovels - invalid JSON response');
             return [];
         }
@@ -962,11 +962,17 @@ class KavitaApiPlugin {
         return novels;
     }
     stableBookKey(bookInfo, chapter, volume) {
-        var _a, _b, _c, _d, _e, _f;
-        const title = (_d = (_c = (_b = (_a = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.bookTitle) !== null && _a !== void 0 ? _a : chapter === null || chapter === void 0 ? void 0 : chapter.titleName) !== null && _b !== void 0 ? _b : volume === null || volume === void 0 ? void 0 : volume.name) !== null && _c !== void 0 ? _c : volume === null || volume === void 0 ? void 0 : volume.title) !== null && _d !== void 0 ? _d : 'book';
-        const volumeNumber = (_f = (_e = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.volumeNumber) !== null && _e !== void 0 ? _e : volume === null || volume === void 0 ? void 0 : volume.number) !== null && _f !== void 0 ? _f : '';
-        // For the normal monolithic-EPUB case this stays unchanged when Kavita
-        // re-indexes the file, while still separating distinct books/volumes.
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        // Prefer Kavita's file identity when available. This is the important
+        // part of the stable-ID fix: Kavita's internal Book ID can change when
+        // a monolithic EPUB is re-indexed, but the underlying file/path does not.
+        const fileIdentity = (_d = (_c = (_b = (_a = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.filePath) !== null && _a !== void 0 ? _a : bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.path) !== null && _b !== void 0 ? _b : bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.fileName) !== null && _c !== void 0 ? _c : bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.filename) !== null && _d !== void 0 ? _d : null;
+        if (fileIdentity)
+            return String(fileIdentity);
+        // Older Kavita/plugin combinations may not expose a file identity, so
+        // keep the deterministic title/volume fallback for compatibility.
+        const title = (_h = (_g = (_f = (_e = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.bookTitle) !== null && _e !== void 0 ? _e : chapter === null || chapter === void 0 ? void 0 : chapter.titleName) !== null && _f !== void 0 ? _f : volume === null || volume === void 0 ? void 0 : volume.name) !== null && _g !== void 0 ? _g : volume === null || volume === void 0 ? void 0 : volume.title) !== null && _h !== void 0 ? _h : 'book';
+        const volumeNumber = (_k = (_j = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.volumeNumber) !== null && _j !== void 0 ? _j : volume === null || volume === void 0 ? void 0 : volume.number) !== null && _k !== void 0 ? _k : '';
         return `${String(title)}\u001f${String(volumeNumber)}`;
     }
     makeStableChapterPath(seriesId, bookKey, page) {
@@ -987,7 +993,7 @@ class KavitaApiPlugin {
                 page,
             };
         }
-        catch {
+        catch (_a) {
             return null;
         }
     }
@@ -1051,7 +1057,7 @@ class KavitaApiPlugin {
     }
     // ---------- PARSE NOVEL ----------
     async parseNovel(novelPath) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
         await this.ensureToken();
         const headers = {
             Accept: 'application/json',
@@ -1173,9 +1179,18 @@ class KavitaApiPlugin {
                 const bookKey = this.stableBookKey(bookInfo, ch, vol);
                 for (let page = 0; page < totalPages; page++) {
                     const tocTitle = this.getTitleForPage(flatToc, page);
-                    // Use Kavita's TOC title, normalizing only known duplicated numbering.
+                    // Use Kavita's TOC title, but normalize known duplicated numbering
+                    // that Kavita can return in page-derived/book-derived titles.
                     let chapterName = (tocTitle || `Chapter ${page + 1}`).trim();
+                    // Remove a leading page-count prefix such as:
+                    //   1 / 512 - Chapter 1: Title
+                    // while leaving the actual chapter title intact.
                     chapterName = chapterName.replace(/^\s*\d+\s*\/\s*\d+\s*[-–—:]\s*/, '').trim();
+                    // Remove repeated chapter labels on the same chapter only, e.g.:
+                    //   Chapter 1: Chapter 1: Title
+                    //   Chapter 1 - Chapter 1 - Title
+                    // Stop as soon as the repeated label is gone so unrelated titles
+                    // are not altered.
                     const repeatedChapterLabel = /^(Chapter\s+\d+(?:\.\d+)?\s*[:：\-–—])\s*/i;
                     while (repeatedChapterLabel.test(chapterName)) {
                         const match = chapterName.match(repeatedChapterLabel);
@@ -1201,7 +1216,7 @@ class KavitaApiPlugin {
                         name: chapterName,
                         path: stablePath,
                         chapterNumber: globalIndex++,
-                        releaseTime: (_y = (_x = (_w = ch.releaseDate) !== null && _w !== void 0 ? _w : ch.created) !== null && _x !== void 0 ? _x : ch.createdUtc) !== null && _y !== void 0 ? _y : null,
+                        releaseTime: (_x = (_w = (_v = ch.releaseDate) !== null && _v !== void 0 ? _v : ch.created) !== null && _w !== void 0 ? _w : ch.createdUtc) !== null && _x !== void 0 ? _x : null,
                     });
                 }
             }
@@ -1283,7 +1298,7 @@ class KavitaApiPlugin {
         try {
             data = JSON.parse(text);
         }
-        catch {
+        catch (_a) {
             console.warn('Kavita API: searchNovels - invalid JSON response');
             return [];
         }
