@@ -271,7 +271,7 @@ class KavitaApiPlugin {
         this.id = 'kavita-api';
         this.name = 'Kavita';
         this.icon = 'src/multi/kavita/icon.png';
-        this.version = '0.0.13';
+        this.version = '0.0.12';
         this.site = storage_1.storage.get('url');
         this.apiKey = storage_1.storage.get('apiKey');
         this._filtersLoaded = false;
@@ -1173,12 +1173,25 @@ class KavitaApiPlugin {
                 const bookKey = this.stableBookKey(bookInfo, ch, vol);
                 for (let page = 0; page < totalPages; page++) {
                     const tocTitle = this.getTitleForPage(flatToc, page);
-                    // Use Kavita's TOC title, but remove a leading page-count prefix
-                    // such as "1 / 450 - " if Kavita has embedded it in the title.
-                    // Do not otherwise rewrite the title.
-                    const chapterName = (tocTitle || `Chapter ${page + 1}`)
-                        .replace(/^\s*\d+\s*\/\s*\d+\s*(?:-\s*)?/, '')
-                        .trim() || `Chapter ${page + 1}`;
+                    // Use Kavita's TOC title, normalizing only known duplicated numbering.
+                    let chapterName = (tocTitle || `Chapter ${page + 1}`).trim();
+                    chapterName = chapterName.replace(/^\s*\d+\s*\/\s*\d+\s*[-–—:]\s*/, '').trim();
+                    const repeatedChapterLabel = /^(Chapter\s+\d+(?:\.\d+)?\s*[:：\-–—])\s*/i;
+                    while (repeatedChapterLabel.test(chapterName)) {
+                        const match = chapterName.match(repeatedChapterLabel);
+                        if (!match)
+                            break;
+                        const label = match[1];
+                        const rest = chapterName.slice(match[0].length).trim();
+                        const normalizedLabel = label.replace(/\s*[:：\-–—]\s*$/, '').trim().toLowerCase();
+                        const restMatch = rest.match(/^(Chapter\s+\d+(?:\.\d+)?)(?:\s*[:：\-–—])\s*(.*)$/i);
+                        if (!restMatch || restMatch[1].trim().toLowerCase() !== normalizedLabel)
+                            break;
+                        chapterName = `Chapter ${restMatch[1].replace(/^Chapter\s+/i, '')} - ${restMatch[2].trim()}`.trim();
+                    }
+                    if (!chapterName) {
+                        chapterName = `Chapter ${page + 1}`;
+                    }
                     const stablePath = this.makeStableChapterPath(seriesId, bookKey, page);
                     this.chapterTargets.set(stablePath, {
                         chapterId: Number(chapterId),

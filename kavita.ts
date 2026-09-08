@@ -302,7 +302,7 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   id = 'kavita-api';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.13';
+  version = '0.0.14';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 
@@ -1455,12 +1455,38 @@ class KavitaApiPlugin implements Plugin.PluginBase {
         for (let page = 0; page < totalPages; page++) {
           const tocTitle = this.getTitleForPage(flatToc, page);
 
-          // Use Kavita's TOC title, but remove a leading page-count prefix
-          // such as "1 / 450 - " if Kavita has embedded it in the title.
-          // Do not otherwise rewrite the title.
-          const chapterName = (tocTitle || `Chapter ${page + 1}`)
-            .replace(/^\s*\d+\s*\/\s*\d+\s*(?:-\s*)?/, '')
-            .trim() || `Chapter ${page + 1}`;
+          // Use Kavita's TOC title, but normalize known duplicated numbering
+          // that Kavita can return in page-derived/book-derived titles.
+          let chapterName = (tocTitle || `Chapter ${page + 1}`).trim();
+
+          // Remove a leading page-count prefix such as:
+          //   1 / 512 - Chapter 1: Title
+          // while leaving the actual chapter title intact.
+          chapterName = chapterName.replace(
+            /^\s*\d+\s*\/\s*\d+\s*[-–—:]\s*/,
+            '',
+          ).trim();
+
+          // Remove repeated chapter labels on the same chapter only, e.g.:
+          //   Chapter 1: Chapter 1: Title
+          //   Chapter 1 - Chapter 1 - Title
+          // Stop as soon as the repeated label is gone so unrelated titles
+          // are not altered.
+          const repeatedChapterLabel = /^(Chapter\s+\d+(?:\.\d+)?\s*[:：\-–—])\s*/i;
+          while (repeatedChapterLabel.test(chapterName)) {
+            const match = chapterName.match(repeatedChapterLabel);
+            if (!match) break;
+            const label = match[1];
+            const rest = chapterName.slice(match[0].length).trim();
+            const normalizedLabel = label.replace(/\s*[:：\-–—]\s*$/, '').trim().toLowerCase();
+            const restMatch = rest.match(/^(Chapter\s+\d+(?:\.\d+)?)(?:\s*[:：\-–—])\s*(.*)$/i);
+            if (!restMatch || restMatch[1].trim().toLowerCase() !== normalizedLabel) break;
+            chapterName = `Chapter ${restMatch[1].replace(/^Chapter\s+/i, '')} - ${restMatch[2].trim()}`.trim();
+          }
+
+          if (!chapterName) {
+            chapterName = `Chapter ${page + 1}`;
+          }
 
           const stablePath = this.makeStableChapterPath(
             seriesId,
