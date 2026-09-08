@@ -302,7 +302,7 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   id = 'kavita-api-k';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.17';
+  version = '0.0.19';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 
