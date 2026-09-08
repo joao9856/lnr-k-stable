@@ -271,7 +271,7 @@ class KavitaApiPlugin {
         this.id = 'kavita-api-k';
         this.name = 'Kavita';
         this.icon = 'src/multi/kavita/icon.png';
-        this.version = '0.0.16';
+        this.version = '0.0.17';
         this.site = storage_1.storage.get('url');
         this.apiKey = storage_1.storage.get('apiKey');
         this._filtersLoaded = false;
@@ -963,14 +963,9 @@ class KavitaApiPlugin {
     }
     stableBookKey(bookInfo, chapter, volume) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-        // Prefer Kavita's file identity when available. This is the important
-        // part of the stable-ID fix: Kavita's internal Book ID can change when
-        // a monolithic EPUB is re-indexed, but the underlying file/path does not.
-        const fileIdentity = (_d = (_c = (_b = (_a = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.filePath) !== null && _a !== void 0 ? _a : bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.path) !== null && _b !== void 0 ? _b : bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.fileName) !== null && _c !== void 0 ? _c : bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.filename) !== null && _d !== void 0 ? _d : null;
-        if (fileIdentity)
-            return String(fileIdentity);
-        // Older Kavita/plugin combinations may not expose a file identity, so
-        // keep the deterministic title/volume fallback for compatibility.
+        // Keep the exact deterministic identity used by the previously working
+        // stable chapter implementation. Kavita's internal Book ID is transient,
+        // and metadata such as filePath/path can change across re-indexes.
         const title = (_h = (_g = (_f = (_e = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.bookTitle) !== null && _e !== void 0 ? _e : chapter === null || chapter === void 0 ? void 0 : chapter.titleName) !== null && _f !== void 0 ? _f : volume === null || volume === void 0 ? void 0 : volume.name) !== null && _g !== void 0 ? _g : volume === null || volume === void 0 ? void 0 : volume.title) !== null && _h !== void 0 ? _h : 'book';
         const volumeNumber = (_k = (_j = bookInfo === null || bookInfo === void 0 ? void 0 : bookInfo.volumeNumber) !== null && _j !== void 0 ? _j : volume === null || volume === void 0 ? void 0 : volume.number) !== null && _k !== void 0 ? _k : '';
         return `${String(title)}\u001f${String(volumeNumber)}`;

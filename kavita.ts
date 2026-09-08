@@ -302,7 +302,7 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   id = 'kavita-api-k';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.16';
+  version = '0.0.17';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 
@@ -1178,20 +1178,9 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   >();
 
   private stableBookKey(bookInfo: any, chapter: any, volume: any): string {
-    // Prefer Kavita's file identity when available. This is the important
-    // part of the stable-ID fix: Kavita's internal Book ID can change when
-    // a monolithic EPUB is re-indexed, but the underlying file/path does not.
-    const fileIdentity =
-      bookInfo?.filePath ??
-      bookInfo?.path ??
-      bookInfo?.fileName ??
-      bookInfo?.filename ??
-      null;
-
-    if (fileIdentity) return String(fileIdentity);
-
-    // Older Kavita/plugin combinations may not expose a file identity, so
-    // keep the deterministic title/volume fallback for compatibility.
+    // Keep the exact deterministic identity used by the previously working
+    // stable chapter implementation. Kavita's internal Book ID is transient,
+    // and metadata such as filePath/path can change across re-indexes.
     const title =
       bookInfo?.bookTitle ??
       chapter?.titleName ??
