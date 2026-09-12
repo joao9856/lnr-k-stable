@@ -302,7 +302,7 @@ class KavitaApiPlugin implements Plugin.PluginBase {
   id = 'kavita-api-k';
   name = 'Kavita';
   icon = 'src/multi/kavita/icon.png';
-  version = '0.0.19';
+  version = '0.0.20';
   site = storage.get('url');
   apiKey = storage.get('apiKey');
 
@@ -1219,8 +1219,6 @@ class KavitaApiPlugin implements Plugin.PluginBase {
     headers: Record<string, string>,
   ): Promise<{ chapterId: number; page: number } | null> {
     const stablePath = this.makeStableChapterPath(seriesId, chapterIndex);
-    const cached = this.chapterTargets.get(stablePath);
-    if (cached) return cached;
 
     const volumesRes = await fetchApi(
       `${this.site}/api/Series/volumes?seriesId=${seriesId}`,
@@ -1256,7 +1254,6 @@ class KavitaApiPlugin implements Plugin.PluginBase {
         if (page < 0 || page >= totalPages) return null;
 
         const target = { chapterId: Number(ch.id), page };
-        this.chapterTargets.set(stablePath, target);
         return target;
       }
     }

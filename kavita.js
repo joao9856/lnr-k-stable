@@ -271,7 +271,7 @@ class KavitaApiPlugin {
         this.id = 'kavita-api-k';
         this.name = 'Kavita';
         this.icon = 'src/multi/kavita/icon.png';
-        this.version = '0.0.19';
+        this.version = '0.0.20';
         this.site = storage_1.storage.get('url');
         this.apiKey = storage_1.storage.get('apiKey');
         this._filtersLoaded = false;
@@ -1020,7 +1020,6 @@ class KavitaApiPlugin {
                 if (page < 0 || page >= totalPages)
                     return null;
                 const target = { chapterId: Number(ch.id), page };
-                this.chapterTargets.set(stablePath, target);
                 return target;
             }
         }
